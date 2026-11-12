@@ -43,6 +43,20 @@ node scripts/serve.mjs      # 本地预览 http://127.0.0.1:4173/
 
 **提交前三个都跑，全绿再提交。**
 
+## 推送（这台机器上怎么推）
+
+远端已设为 `ssh://git@ssh.github.com:443/miaki03/gaoshu.git`（22 端口不通，必须走 443）。
+
+本仓库的 `.git/config` 里已设 `core.sshCommand = ssh -F E:/gaoshu/.tmp/ssh_config`，那个配置文件里写了：
+
+- 用 `id_ed25519_mephisto` 这把 key（**账号级**，有写权限）
+- 用 `E:/gaoshu/.tmp/connect.exe` 走 `127.0.0.1:7890` 的 HTTP 代理
+
+**两个必须知道的坑**：
+
+1. 默认的 `id_ed25519` 是一把 **deploy key（HugoPoster）**，推送会报 `Permission to ... denied to deploy key`。必须用 mephisto 那把。
+2. git 在这个沙箱里 spawn ssh 会被拒（`couldn't create signal pipe`），所以 **push 必须提权到 danger-full-access** 跑一次。
+
 ## 每轮工作协议
 
 1. 读 `content/00-start/02-cram-plan.md` 与 `content/00-start/01-exam-map.md`，确认现在该写哪一块；
