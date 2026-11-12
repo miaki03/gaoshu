@@ -152,7 +152,8 @@ function expandBlocks(src) {
         out.push('<div class="g-body">');
         stack.push('</div></details>');
       } else {
-        out.push(`<div class="g-block ${cfg.cls}"><div class="g-head"><span class="g-label">${escapeHtml(label)}</span>${extra}</div>`);
+        const anchor = kind === 'problem' && attrs.id ? ` id="p-${escapeHtml(attrs.id)}"` : '';
+        out.push(`<div class="g-block ${cfg.cls}"${anchor}><div class="g-head"><span class="g-label">${escapeHtml(label)}</span>${extra}</div>`);
         out.push('');
         out.push('<div class="g-body">');
         stack.push('</div></div>');
@@ -172,6 +173,13 @@ function expandBlocks(src) {
 }
 
 /* ---------------- markdown ---------------- */
+function inlineMd(text) {
+  if (!text) return '';
+  const { text: protectedText, store } = protectMath(String(text));
+  const html = marked.parseInline(protectedText, { gfm: true, breaks: false, mangle: false });
+  return restoreMath(html, store);
+}
+
 function slugifyHeading(text, i) {
   const t = text.replace(/<[^>]+>/g, '').trim();
   const ascii = t.toLowerCase().replace(/[^\w\u4e00-\u9fa5]+/g, '-').replace(/^-+|-+$/g, '');
@@ -287,12 +295,13 @@ function shell({ title, body, activeSlug = '', toc = [], className = '', desc = 
         .map((t) => `<li class="lvl${t.level}"><a href="#${t.id}">${escapeHtml(t.text)}</a></li>`)
         .join('')}</ul></nav>`
     : '';
+  const docTitle = title && title !== site.title ? `${title} · ${site.title}` : site.title;
   return `<!doctype html>
 <html lang="zh-CN" data-theme="auto">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>${escapeHtml(title)} · ${escapeHtml(site.title)}</title>
+<title>${escapeHtml(docTitle)}</title>
 <meta name="description" content="${escapeHtml(desc || site.subtitle)}">
 <link rel="stylesheet" href="${BASE}/assets/katex/katex.min.css">
 <link rel="stylesheet" href="${BASE}/assets/style.css">
@@ -373,7 +382,7 @@ for (const p of sections) {
   <header class="page-head">
     <div class="crumbs">${crumbsFor(p)}</div>
     <h1>${escapeHtml(p.title)}</h1>
-    ${p.summary ? `<p class="lede">${escapeHtml(p.summary)}</p>` : ''}
+    ${p.summary ? `<p class="lede">${inlineMd(p.summary)}</p>` : ''}
     ${starRow(p)}
   </header>
   <div class="page-body">${html}</div>
@@ -433,7 +442,7 @@ for (const part of nav) {
     <section class="ch-card">
       <h3><a href="${url('c/' + ch.id)}">${escapeHtml(ch.title)}</a></h3>
       <p>${escapeHtml(ch.desc || '')}</p>
-      <ul>${ch.items.map((it) => `<li><a href="${url('s/' + it.slug)}">${escapeHtml(it.title)}</a>${it.summary ? `<span class="muted">${escapeHtml(it.summary)}</span>` : ''}</li>`).join('')}</ul>
+      <ul>${ch.items.map((it) => `<li><a href="${url('s/' + it.slug)}">${escapeHtml(it.title)}</a>${it.summary ? `<span class="muted">${inlineMd(it.summary)}</span>` : ''}</li>`).join('')}</ul>
     </section>`).join('');
   write(path.join('p', part.id, 'index.html'), shell({
     title: part.title,
@@ -443,6 +452,22 @@ for (const part of nav) {
 }
 
 /* chapter pages */
+const kbProblems = (() => {
+  const dir = path.join(ROOT_DIR, 'kb');
+  const out = [];
+  if (fs.existsSync(dir)) {
+    for (const name of fs.readdirSync(dir)) {
+      if (name.startsWith('problems') && name.endsWith('.json')) {
+        try { out.push(...JSON.parse(fs.readFileSync(path.join(dir, name), 'utf8'))); } catch { /* 忽略坏文件，check.mjs 会报 */ }
+      }
+    }
+  }
+  return out;
+})();
+const problemById = new Map(kbProblems.filter((p) => p && p.id).map((p) => [p.id, p]));
+const pageTitleBySlug = new Map(pages.map((p) => [p.slug, p.title]));
+const bySlugTitle = (slug) => pageTitleBySlug.get(slug) || slug;
+
 for (const part of nav) {
   for (const ch of part.chapters) {
     if (!ch.items.length) continue;
@@ -450,13 +475,40 @@ for (const part of nav) {
       <li class="sec-row">
         <span class="sec-idx">${i + 1}</span>
         <div><a href="${url('s/' + it.slug)}">${escapeHtml(it.title)}</a>
-        ${it.summary ? `<p class="muted">${escapeHtml(it.summary)}</p>` : ''}</div>
+        ${it.summary ? `<p class="muted">${inlineMd(it.summary)}</p>` : ''}</div>
         ${it.minutes ? `<span class="sec-min">${it.minutes}′</span>` : ''}
       </li>`).join('');
+
+    const goals = (ch.goals || []).length
+      ? `<section class="ch-block"><h2>读完能做什么</h2><ol class="goal-list">${ch.goals
+          .map((g) => `<li>${escapeHtml(g)}</li>`).join('')}</ol></section>`
+      : '';
+
+    const glossary = (ch.glossary || []).length
+      ? `<section class="ch-block"><h2>本章术语表</h2><div class="table-wrap"><table><tbody>${ch.glossary
+          .map((g) => `<tr><th style="width:8rem">${escapeHtml(g.t)}</th><td>${escapeHtml(g.d)}</td></tr>`).join('')}</tbody></table></div></section>`
+      : '';
+
+    const selfCheck = (ch.selfCheck || []).length
+      ? `<section class="ch-block"><h2>自检 3 题</h2><p class="muted">做完这三题再往下走。点题号直接跳到题目。</p><ol class="goal-list">${ch.selfCheck
+          .map((pid) => {
+            const pr = problemById.get(pid);
+            const target = pr && pr.page ? `${url('s/' + pr.page)}#p-${encodeURIComponent(pid)}` : null;
+            return target
+              ? `<li><a href="${target}">${escapeHtml(pid)}</a> <span class="muted">→ ${escapeHtml(bySlugTitle(pr.page))}</span></li>`
+              : `<li class="muted">${escapeHtml(pid)}</li>`;
+          })
+          .join('')}</ol></section>`
+      : '';
+
+    const handsOn = ch.handsOn
+      ? `<section class="ch-block"><h2>动手</h2><p>${escapeHtml(ch.handsOn)}</p></section>`
+      : '';
+
     write(path.join('c', ch.id, 'index.html'), shell({
       title: ch.title,
       activeSlug: '',
-      body: `<header class="page-head"><div class="crumbs"><a href="${BASE}/">主页</a><span>/</span><a href="${url('p/' + part.id)}">${escapeHtml(part.title)}</a></div><h1>${escapeHtml(ch.title)}</h1><p class="lede">${escapeHtml(ch.desc || '')}</p></header><ol class="sec-list">${list}</ol>`,
+      body: `<header class="page-head"><div class="crumbs"><a href="${BASE}/">主页</a><span>/</span><a href="${url('p/' + part.id)}">${escapeHtml(part.title)}</a></div><h1>${escapeHtml(ch.title)}</h1><p class="lede">${escapeHtml(ch.desc || '')}</p></header>${goals}<section class="ch-block"><h2>${ch.items.length} 节</h2><ol class="sec-list">${list}</ol></section>${glossary}${selfCheck}${handsOn}`,
     }));
   }
 }
