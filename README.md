@@ -43,12 +43,26 @@ npm run verify     # 复算题库里每一道题的答案（需要 Python 3.8+�
 
 ## 部署
 
-产物是纯静态的 `dist/`，可以放到任何静态托管：
+产物是纯静态的 `dist/`，可以放到任何静态托管。
 
-| 平台 | 设置 |
+### Cloudflare Pages
+
+| 配置项 | 值 |
 | --- | --- |
-| GitHub Pages | 发布 `dist/`（或把构建命令写成 `npm run build`，输出目录 `dist`） |
-| Cloudflare Pages / Vercel / Netlify | Build command: `npm run build`，Output directory: `dist` |
+| Framework preset | **None**（不要选 Hugo —— 这个仓库不是 Hugo 站点，选 Hugo 会去执行 `hugo` 并失败） |
+| Build command | `npm run build` |
+| Build output directory | `dist` |
+| 环境变量 | 不需要（若设过 `HUGO_VERSION`，删掉） |
+
+### Cloudflare Workers（静态资源）
+
+仓库里的 `wrangler.toml` 已声明 `[assets] directory = "./dist"`。Build command 同样设成 `npm run build`。
+
+### GitHub Pages
+
+`.github/workflows/pages.yml` 已就绪：推送到 `main` 会依次跑「复算题库 → 结构校验 → 构建 → 部署」。在仓库 Settings → Pages 把 Source 切成 **GitHub Actions** 即可。
+
+### 子路径部署
 
 如果部署在子路径（如 `https://user.github.io/gaoshu/`），把 `site.json` 里的 `"base"` 改成 `"/gaoshu"` 再构建——站内链接会自动加前缀。
 

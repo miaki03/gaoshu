@@ -1,0 +1,10 @@
+# Cloudflare Workers / Pages 的静态资源声明。
+# 站点是纯静态产物，构建命令 `npm run build` 输出到 dist/。
+# 如果你用的是 Cloudflare Pages（不是 Workers），这份文件会被忽略，
+# 需要在后台把 Build command 改成 `npm run build`、输出目录改成 `dist`。
+
+name = "gaoshu"
+compatibility_date = "2026-11-01"
+
+[assets]
+directory = "./dist"
