@@ -1,0 +1,209 @@
+[
+  {
+    "id": "1.1-01",
+    "page": "1-1-functions",
+    "level": "易",
+    "answer": "-2/3",
+    "expect": -0.6666666666666666,
+    "verify": "(lambda f: f(f(2)))(lambda x: x/(1-x))",
+    "note": "复合函数逐层代入：f(2)=-2，再 f(-2)=-2/3"
+  },
+  {
+    "id": "1.3-01",
+    "page": "1-3-function-limit",
+    "level": "易",
+    "answer": "1/2",
+    "expect": 0.5,
+    "verify": "lim(lambda x: (sqrt(1+x)-1)/x, 0)",
+    "note": "有理化：分子分母同乘 sqrt(1+x)+1"
+  },
+  {
+    "id": "1.3-02",
+    "page": "1-3-function-limit",
+    "level": "中",
+    "answer": "-2",
+    "expect": -2,
+    "verify": "lim(lambda x: (x*x-1)/(x*x-3*x+2), 1)",
+    "note": "因式分解后约去 x-1"
+  },
+  {
+    "id": "1.4-01",
+    "page": "1-4-two-limits",
+    "level": "中",
+    "answer": "e^3",
+    "expect": 20.085536923187668,
+    "verify": "lim(lambda x: ((x+2)/(x-1))**x, 'inf')",
+    "note": "1^∞ 型：化成 (1+3/(x-1))^x"
+  },
+  {
+    "id": "1.4-02",
+    "page": "1-4-two-limits",
+    "level": "易",
+    "answer": "1",
+    "expect": 1,
+    "verify": "lim(lambda x: sin(3*x)/x, 0) / 3",
+    "note": "lim sin(3x)/x = 3，故 sin(3x)/(3x) → 1"
+  },
+  {
+    "id": "1.5-01",
+    "page": "1-5-infinitesimal",
+    "level": "易",
+    "answer": "1/2",
+    "expect": 0.5,
+    "verify": "lim(lambda x: (1-cos(x))/(x*sin(x)), 0)",
+    "note": "1-cos x ~ x²/2，sin x ~ x"
+  },
+  {
+    "id": "1.5-02",
+    "page": "1-5-infinitesimal",
+    "level": "难",
+    "answer": "1/2",
+    "expect": 0.5,
+    "verify": "lim(lambda x: (tan(x)-sin(x))/x**3, 0)",
+    "note": "加减中同阶抵消，必须升到三阶：tan x - sin x ~ x³/2"
+  },
+  {
+    "id": "1.6-01",
+    "page": "1-6-continuity",
+    "level": "易",
+    "answer": "2",
+    "expect": 2,
+    "verify": "lim(lambda x: (x*x-1)/(x-1), 1)",
+    "note": "连续求参数：极限值就是应补充的定义值"
+  },
+  {
+    "id": "1.6-02",
+    "page": "1-6-continuity",
+    "level": "中",
+    "answer": "跳跃间断点",
+    "expect": 1,
+    "verify": "float(abs(lim(lambda x: abs(x)/x, 0, side='left') + 1) < 1e-6 and abs(lim(lambda x: abs(x)/x, 0, side='right') - 1) < 1e-6)",
+    "note": "|x|/x 在 0 处左极限 -1、右极限 1，都存在但不相等 → 跳跃"
+  },
+  {
+    "id": "1.7-01",
+    "page": "1-7-continuous-props",
+    "level": "易",
+    "answer": "(0,1)",
+    "expect": 1,
+    "verify": "float((lambda f: f(0) < 0 < f(1))(lambda x: x**3 + 2*x - 1))",
+    "note": "零点定理只要求 f(a)f(b)<0；f(0)=-1, f(1)=2 异号"
+  },
+  {
+    "id": "2.1-01",
+    "page": "2-1-derivative-def",
+    "level": "中",
+    "answer": "cos1",
+    "expect": 0.5403023058681398,
+    "verify": "lim(lambda h: (sin(1+h)-sin(1-h))/(2*h), 0)",
+    "note": "分母是 2h，结果就是 f'(x0)；以 f=sin, x0=1 实测得 cos1"
+  },
+  {
+    "id": "2.1-03",
+    "page": "2-1-derivative-def",
+    "level": "中",
+    "answer": "2cos1",
+    "expect": 1.0806046117362795,
+    "verify": "lim(lambda h: (sin(1+h)-sin(1-h))/h, 0)",
+    "note": "分母换成 h，结果翻倍为 2f'(x0)=2cos1；这就是考点里最常见的陷阱"
+  },
+  {
+    "id": "2.1-02",
+    "page": "2-1-derivative-def",
+    "level": "易",
+    "answer": "-1",
+    "expect": -1,
+    "verify": "lim(lambda h: (abs(h)-0)/h, 0, side='left')",
+    "note": "|x| 在 0 处的左导数：h<0 时 |h|=-h"
+  },
+  {
+    "id": "2.3-01",
+    "page": "2-3-rules",
+    "level": "易",
+    "answer": "1",
+    "expect": 1,
+    "verify": "d1(lambda x: log(1+x*x), 1)",
+    "note": "ln(1+x²) 在 x=1 处的导数 2x/(1+x²)=1"
+  },
+  {
+    "id": "2.3-02",
+    "page": "2-3-rules",
+    "level": "中",
+    "answer": "cos1",
+    "expect": 0.5403023058681398,
+    "verify": "d1(lambda x: sin(exp(x)), 0)",
+    "note": "复合链式：cos(e^x)·e^x，在 x=0 处为 cos 1"
+  },
+  {
+    "id": "2.4-01",
+    "page": "2-4-higher",
+    "level": "中",
+    "answer": "e^x(x+2)",
+    "expect": 8.154845485377136,
+    "verify": "d2(lambda x: x*exp(x), 1)",
+    "note": "(xe^x)'' = e^x(x+2)，在 x=1 处为 3e"
+  },
+  {
+    "id": "2.5-01",
+    "page": "2-5-implicit",
+    "level": "中",
+    "answer": "-1",
+    "expect": -1,
+    "verify": "d1(lambda x: (-x + sqrt(12-3*x*x))/2, 1)",
+    "note": "x²+xy+y²=3 在 (1,1) 处：y'=-(2x+y)/(x+2y)=-1；用解出的显式分支数值复算"
+  },
+  {
+    "id": "2.6-01",
+    "page": "2-6-parametric",
+    "level": "易",
+    "answer": "3",
+    "expect": 3,
+    "verify": "d1(lambda x: x**1.5, 4)",
+    "note": "x=t², y=t³ 在 t=2 处 dy/dx=3t/2=3；等价于 y=x^{3/2} 在 x=4 处"
+  },
+  {
+    "id": "2.6-02",
+    "page": "2-6-parametric",
+    "level": "难",
+    "answer": "3/8",
+    "expect": 0.375,
+    "verify": "d2(lambda x: x**1.5, 4)",
+    "note": "二阶导数分母是 x'(t)=2t，不是 x''(t)"
+  },
+  {
+    "id": "2.7-01",
+    "page": "2-7-log-derivative",
+    "level": "中",
+    "answer": "1",
+    "expect": 1,
+    "verify": "d1(lambda x: x**x, 1)",
+    "note": "(x^x)' = x^x(ln x + 1)，在 x=1 处为 1"
+  },
+  {
+    "id": "2.8-01",
+    "page": "2-8-differential",
+    "level": "易",
+    "answer": "1",
+    "expect": 1,
+    "verify": "d1(lambda x: x*log(x), 1)",
+    "note": "y=x ln x 在 x=1 处斜率为 ln1+1=1"
+  },
+  {
+    "id": "2.8-02",
+    "page": "2-8-differential",
+    "level": "中",
+    "answer": "y=x-1",
+    "expect": -1,
+    "verify": "(lambda f: f(1) - d1(f, 1)*1)(lambda x: x*log(x))",
+    "note": "切线 y=x-1 的截距为 -1；截距 = y0 - k·x0"
+  },
+  {
+    "id": "2.8-03",
+    "page": "2-8-differential",
+    "level": "中",
+    "answer": "0",
+    "expect": 1,
+    "verify": "float(max(abs(h*sin(1/h)) for h in [1e-2,1e-3,1e-4,1e-5,1e-6]) <= 1e-2)",
+    "note": "x²sin(1/x) 在 0 处：差商 (f(x)-f(0))/x = x·sin(1/x) 被 |x| 控制，故 f'(0)=0"
+  }
+]

@@ -1,0 +1,247 @@
+[
+  {
+    "id": "1.1-02",
+    "page": "1-1-functions",
+    "level": "中",
+    "answer": "D",
+    "expect": 1,
+    "verify": "float(abs(sqrt((-2)**2) - 2) < 1e-12 and abs((-2)**3 - sqrt((-2)**6)) > 1 and abs(log(exp(-3)) + 3) < 1e-12)",
+    "note": "√(x²)=|x| 而 x³≠√(x⁶)（x<0 时），ln(e^x)=x 恒成立"
+  },
+  {
+    "id": "1.2-01",
+    "page": "1-2-sequence-limit",
+    "level": "易",
+    "answer": "2/5",
+    "expect": 0.4,
+    "verify": "lim(lambda n: (2*n*n + 3*n - 1)/(5*n*n - n + 4), 'inf')",
+    "note": "分子分母同除 n²，取最高次系数比"
+  },
+  {
+    "id": "1.2-02",
+    "page": "1-2-sequence-limit",
+    "level": "中",
+    "answer": "D",
+    "expect": 1,
+    "verify": "float(abs(lim(lambda n: (-1)**(2*n), 'inf') - 1) < 1e-9 and abs(lim(lambda n: (-1)**(2*n+1), 'inf') + 1) < 1e-9)",
+    "note": "子列 a_{2n}→1、a_{2n+1}→-1，两子列极限不同 → 原数列发散，即不一定收敛"
+  },
+  {
+    "id": "1.2-03",
+    "page": "1-2-sequence-limit",
+    "level": "中",
+    "answer": "1/2",
+    "expect": 0.5,
+    "verify": "lim(lambda n: (1 + 1/n)/2, 'inf')",
+    "note": "先求和得 (n+1)/(2n)，再取极限"
+  },
+  {
+    "id": "1.3-03",
+    "page": "1-3-function-limit",
+    "level": "中",
+    "answer": "a=1",
+    "expect": 1,
+    "verify": "lim(lambda x: (exp(x)-1)/x, 0)",
+    "note": "取 a=1 后极限存在且等于 1；a≠1 时分子不趋零，极限不存在"
+  },
+  {
+    "id": "1.4-03",
+    "page": "1-4-two-limits",
+    "level": "中",
+    "answer": "1",
+    "expect": 1,
+    "verify": "lim(lambda x: log(1+x)/x, 0)",
+    "note": "由 (1+x)^{1/x}→e 取对数得 ln(1+x)/x→1"
+  },
+  {
+    "id": "1.5-03",
+    "page": "1-5-infinitesimal",
+    "level": "中",
+    "answer": "三阶",
+    "expect": 0.16666666666666666,
+    "verify": "lim(lambda x: (x-sin(x))/x**3, 0)",
+    "note": "与 x³ 之比为 1/6（非零常数），故 x-sin x 是 x 的三阶无穷小"
+  },
+  {
+    "id": "1.6-03",
+    "page": "1-6-continuity",
+    "level": "难",
+    "answer": "a=1, b=-2",
+    "expect": 3,
+    "verify": "lim(lambda x: (x*x + 1*x - 2)/(x-1), 1)",
+    "note": "代入 a=1,b=-2 后极限应为 3，且分子在 x=1 处为 0"
+  },
+  {
+    "id": "1.7-02",
+    "page": "1-7-continuous-props",
+    "level": "中",
+    "answer": "介值定理",
+    "expect": 1,
+    "verify": "float((lambda f: min(f(0), f(1)) <= (f(0)+f(1))/2 <= max(f(0), f(1)))(lambda x: x*x))",
+    "note": "要证的核心是 (f(a)+f(b))/2 落在 [m,M] 内；用 f(x)=x² 在 [0,1] 上验证该不等式"
+  },
+  {
+    "id": "2.2-01",
+    "page": "2-2-relations",
+    "level": "难",
+    "answer": "C（3 个）",
+    "expect": 1,
+    "verify": "float(abs(lim(lambda x: abs(x), 0)) < 1e-9 and abs(lim(lambda h: abs(h)/h, 0, side='left') + 1) < 1e-6 and abs(lim(lambda h: abs(h)/h, 0, side='right') - 1) < 1e-6)",
+    "note": "验证 |x| 在 0 处连续（极限为 0）但左右导数不同 → 不连续必不可导、必不可微"
+  },
+  {
+    "id": "2.2-02",
+    "page": "2-2-relations",
+    "level": "易",
+    "answer": "B（必要但不充分）",
+    "expect": 1,
+    "verify": "float(abs(lim(lambda x: abs(x), 0)) < 1e-9 and abs((lambda h: abs(h)/h)(1) - 1) < 1e-12)",
+    "note": "可微⇒连续为真（必要），连续⇒可微为假（|x| 不充分）"
+  },
+  {
+    "id": "2.3-03",
+    "page": "2-3-rules",
+    "level": "中",
+    "answer": "(1-x²)/(1+x²)²",
+    "expect": -0.12,
+    "verify": "d1(lambda x: x/(1+x*x), 2)",
+    "note": "在 x=2 处为 (1-4)/25 = -0.12"
+  },
+  {
+    "id": "2.3-04",
+    "page": "2-3-rules",
+    "level": "难",
+    "answer": "-1/(√x(1-x))",
+    "expect": -2.6666666666666665,
+    "verify": "d1(lambda x: log((1-sqrt(x))/(1+sqrt(x))), 0.25)",
+    "note": "在 x=0.25 处为 -1/(0.5·0.75) = -8/3"
+  },
+  {
+    "id": "2.4-02",
+    "page": "2-4-higher",
+    "level": "易",
+    "answer": "2sinx+4xcosx-x²sinx",
+    "expect": 3.0026802082310706,
+    "verify": "d2(lambda x: x*x*sin(x), 1)",
+    "note": "在 x=1 处为 sin1+4cos1"
+  },
+  {
+    "id": "2.5-02",
+    "page": "2-5-implicit",
+    "level": "中",
+    "answer": "-y/(e^y+x)",
+    "expect": -0.34657359027997264,
+    "tol": 1e-4,
+    "verify": "(lambda f: (f(0.001)-f(-0.001))/0.002)(lambda x: solve(lambda y: exp(y) + x*y - 2, -5, 5))",
+    "note": "e^y+xy=2 在 x=0 处 y=ln2，y'=-ln2/2；用二分法解出 y(x) 后数值求导复算"
+  },
+  {
+    "id": "2.5-03",
+    "page": "2-5-implicit",
+    "level": "难",
+    "answer": "-e^2",
+    "expect": -7.38905609893065,
+    "tol": 1e-3,
+    "verify": "(lambda f: (f(0.001)-f(-0.001))/0.002)(lambda x: solve(lambda y: log(y) + x*y - 1, 0.1, 20))",
+    "note": "ln y+xy=1 在 x=0 处 y=e，y'=-y²/(1+xy)=-e²；用二分法复算"
+  },
+  {
+    "id": "2.6-03",
+    "page": "2-6-parametric",
+    "level": "中",
+    "answer": "-(b/a)cot t",
+    "expect": -1.5,
+    "verify": "(lambda t,h,a,b: (b*sin(t+h) - b*sin(t-h))/(a*cos(t+h) - a*cos(t-h)))(pi/4, 1e-5, 2, 3)",
+    "note": "取 a=2,b=3，在 t=π/4 处 dy/dx=-(3/2)cot(π/4)=-3/2；用参数曲线差分复算"
+  },
+  {
+    "id": "2.7-02",
+    "page": "2-7-log-derivative",
+    "level": "难",
+    "answer": "y[2/(x+1)+1/(2(x-1))-3/(x+2)]",
+    "expect": 0.05859375,
+    "verify": "d1(lambda x: (x+1)**2*sqrt(x-1)/(x+2)**3, 2)",
+    "note": "在 x=2 处：y=9/64，括号内为 2/3+1/2-3/4=5/12，乘积为 15/256≈0.0586"
+  },
+  {
+    "id": "2025-F1",
+    "page": "paper-2025",
+    "level": "易",
+    "answer": "e^(2x)",
+    "expect": 1,
+    "verify": "float(abs(log(exp(2*0.7)) - 2*0.7) < 1e-12)",
+    "note": "f[φ(x)]=ln φ(x)=2x ⇒ φ(x)=e^{2x}；验证 ln(e^{2x})=2x"
+  },
+  {
+    "id": "2025-F5",
+    "page": "paper-2025",
+    "level": "中",
+    "answer": "π/2",
+    "expect": 1,
+    "verify": "float(abs(acos(0) - pi/2) < 1e-12 and abs(lim(lambda x: sin(x), 0, side='left')) < 1e-9)",
+    "note": "左极限 0，右极限 a-arccos0=a-π/2，令相等得 a=π/2"
+  },
+  {
+    "id": "2025-C1",
+    "page": "paper-2025",
+    "level": "易",
+    "answer": "x≥0",
+    "expect": 1,
+    "verify": "float(log(0+1) == 0 and log(-0.5+1) < 0)",
+    "note": "根号内需 ln(x+1)≥0，即 x+1≥1；同时真数 x+1>0。交集为 x≥0"
+  },
+  {
+    "id": "2025-C2",
+    "page": "paper-2025",
+    "level": "易",
+    "answer": "B",
+    "expect": 1,
+    "verify": "float(abs(log(exp(-3)) + 3) < 1e-12 and abs(sqrt((-3)**2) - (-3)) > 1)",
+    "note": "ln(e^x)=x 对一切 x 成立；√(x²)=|x|≠x（x<0）"
+  },
+  {
+    "id": "2025-C3",
+    "page": "paper-2025",
+    "level": "中",
+    "answer": "B 收敛于2",
+    "expect": 2,
+    "verify": "lim(lambda n: 2*(1 - 1/n), 'inf')",
+    "note": "两端 2x_n→2 与 2x_n+1/2^n→2，夹逼得 y_n→2"
+  },
+  {
+    "id": "2025-C4",
+    "page": "paper-2025",
+    "level": "难",
+    "answer": "C k=1, a=3/2",
+    "expect": 1,
+    "verify": "lim(lambda x: (sqrt(1+1*x**3)-1)/(1-cos(abs(x)**1.5)), 0, side='right')",
+    "note": "比值极限为 1，故两者等价；即 2a=3 且 k/2=1/2"
+  },
+  {
+    "id": "2025-C8",
+    "page": "paper-2025",
+    "level": "中",
+    "answer": "B",
+    "expect": 1,
+    "verify": "float(abs(lim(lambda h: h**2, 0, side='left')) < 1e-9 and max(1/sqrt(h) for h in [1e-2,1e-4,1e-6]) > 1e2)",
+    "note": "左导数 lim h²=0 存在；右导数 lim 1/√h=+∞ 不存在"
+  },
+  {
+    "id": "2025-S3",
+    "page": "paper-2025",
+    "level": "难",
+    "answer": "(x+y)/(x-y)",
+    "expect": 1,
+    "verify": "(lambda t: float(abs((exp(t)*(sin(t)+cos(t)))/(exp(t)*(cos(t)-sin(t))) - (sin(t)+cos(t))/(cos(t)-sin(t))) < 1e-12))(0.7)",
+    "note": "曲线满足 r=e^θ；参数求导得 (sinθ+cosθ)/(cosθ-sinθ)，与 (x+y)/(x-y) 相等"
+  },
+  {
+    "id": "2025-S4",
+    "page": "paper-2025",
+    "level": "中",
+    "answer": "-tan t",
+    "expect": -1,
+    "verify": "(lambda t,h: (sin(t+h)**3 - sin(t-h)**3)/(cos(t+h)**3 - cos(t-h)**3))(pi/4, 1e-5)",
+    "note": "一阶导数为 -tan t，在 t=π/4 处为 -1；用参数曲线差分复算"
+  }
+]

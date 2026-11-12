@@ -1,0 +1,13 @@
+node_modules/
+dist/
+.tmp/
+resources/
+.DS_Store
+Thumbs.db
+*.log
+__pycache__/
+
+# 原始素材（已复制到 assets/files/ 并改成 ASCII 文件名，避免仓库里存两份）
+/*.doc
+/*.docx
+/*.pdf

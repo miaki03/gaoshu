@@ -1,0 +1,28 @@
+{
+  "name": "gaoshu",
+  "version": "1.0.0",
+  "private": true,
+  "description": "高等数学 A-1 期中冲刺与长期学习站点（静态站，零前端框架）",
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "check": "node scripts/check.mjs",
+    "verify": "python scripts/verify.py",
+    "preview": "node scripts/serve.mjs",
+    "all": "node scripts/build.mjs && node scripts/check.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/miaki03/gaoshu.git"
+  },
+  "keywords": [
+    "math",
+    "study",
+    "gaoshu",
+    "static-site"
+  ],
+  "dependencies": {
+    "katex": "^0.19.1",
+    "marked": "^18.2.0"
+  }
+}

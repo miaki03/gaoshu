@@ -1,0 +1,146 @@
+[
+  {
+    "id": "2025-F2",
+    "page": "paper-2025",
+    "level": "易",
+    "answer": "3",
+    "expect": 3,
+    "verify": "lim(lambda n: (6*n**4 + n**2)/(2*n**4 - n), 'inf')",
+    "note": "分子分母同除 n^4，得 6/2"
+  },
+  {
+    "id": "2025-F3",
+    "page": "paper-2025",
+    "level": "中",
+    "answer": "e^-2",
+    "expect": 0.1353352832366127,
+    "verify": "lim(lambda x: (1-x)**(2/x), 0)",
+    "note": "1^∞ 型：e^{lim (2/x)·(-x)} = e^{-2}"
+  },
+  {
+    "id": "2025-F4",
+    "page": "paper-2025",
+    "level": "中",
+    "answer": "2",
+    "expect": 1,
+    "verify": "float(abs(lim(lambda x: sin(2*x)/x, 0) - 2) < 1e-9 and max(abs(h*cos(1/h)) for h in [1e-2,1e-3,1e-4]) < 1e-2)",
+    "note": "第一项无穷小×有界→0（用 |h·cos(1/h)| ≤ |h| 验证）；第二项 sin(2x)/x→2"
+  },
+  {
+    "id": "2025-F6",
+    "page": "paper-2025",
+    "level": "中",
+    "answer": "6",
+    "expect": 6,
+    "verify": "lim(lambda x: (2*sin(3*x) - 2*sin(0))/sin(x), 0)",
+    "note": "用 f(x)=2sin x 实测：f'(0)=2，极限为 3f'(0)=6"
+  },
+  {
+    "id": "2025-F7",
+    "page": "paper-2025",
+    "level": "中",
+    "answer": "2",
+    "expect": 2,
+    "verify": "d1(lambda x: tan(x), pi/4)",
+    "note": "sec²(π/4)=2，故 dy=2dx"
+  },
+  {
+    "id": "2025-F8",
+    "page": "paper-2025",
+    "level": "中",
+    "answer": "1/2",
+    "expect": 0.5,
+    "verify": "d1(lambda x: log(exp(x)+1), 0)",
+    "note": "y'=e^x/(e^x+1)，在 0 处为 1/2"
+  },
+  {
+    "id": "2025-F9",
+    "page": "paper-2025",
+    "level": "中",
+    "answer": "2",
+    "expect": 2,
+    "verify": "d2(lambda x: cos(2*x), pi/3)",
+    "note": "f''(x)=-4cos2x，在 π/3 处为 2"
+  },
+  {
+    "id": "2025-F10",
+    "page": "paper-2025",
+    "level": "难",
+    "answer": "1",
+    "expect": 1,
+    "verify": "d1(lambda x: x**sin(x), pi/2)",
+    "note": "对数求导：f'=f(cos x ln x + sin x / x)，在 π/2 处为 1"
+  },
+  {
+    "id": "2025-C5",
+    "page": "paper-2025",
+    "level": "难",
+    "answer": "5/2",
+    "expect": 2.5,
+    "verify": "(lim(lambda x: (2+3*exp(1/x))/(1+exp(1/x)) - abs(x)/(2*x), 0, side='left') + lim(lambda x: (2+3*exp(1/x))/(1+exp(1/x)) - abs(x)/(2*x), 0, side='right'))/2",
+    "note": "左右极限都是 5/2 → 可去间断点"
+  },
+  {
+    "id": "2025-C6",
+    "page": "paper-2025",
+    "level": "易",
+    "answer": "(1,2)",
+    "expect": 1,
+    "verify": "float((lambda f: f(1) < 0 < f(2))(lambda x: x + log(x) - 2))",
+    "note": "f(1)=-1, f(2)=ln2>0 异号"
+  },
+  {
+    "id": "2025-C7",
+    "page": "paper-2025",
+    "level": "中",
+    "answer": "1",
+    "expect": 1,
+    "verify": "d1(lambda x: x**3 - x**2 + 2, 1)",
+    "note": "切线斜率 1，切线 x-y+1=0"
+  },
+  {
+    "id": "2025-C9",
+    "page": "paper-2025",
+    "level": "难",
+    "answer": "-6",
+    "expect": -6,
+    "verify": "d1(lambda x: x*(x+1)*(x+2)*(x+3)*(x+4), -1)",
+    "note": "f'(-1)=g(-1)=(-1)(1)(2)(3)=-6"
+  },
+  {
+    "id": "2025-C10",
+    "page": "paper-2025",
+    "level": "中",
+    "answer": "2^10",
+    "expect": 1024,
+    "verify": "(-2)**10",
+    "note": "(e^{ax})^{(n)}=a^n e^{ax}，a=-2，n=10"
+  },
+  {
+    "id": "2025-S1",
+    "page": "paper-2025",
+    "level": "中",
+    "answer": "4",
+    "expect": 4,
+    "verify": "lim(lambda x: (exp(x-2)-1)/(sqrt(x+2)-2), 2)",
+    "note": "令 t=x-2：分子 ~t，分母 ~t/4"
+  },
+  {
+    "id": "2025-S2",
+    "page": "paper-2025",
+    "level": "难",
+    "answer": "a=2, b=1",
+    "expect": 3,
+    "verify": "lim(lambda x: (2*x*x - 1*x - 1)/(x-1), 1)",
+    "note": "代入 a=2,b=1 后极限应为 f(1)=3"
+  },
+  {
+    "id": "2025-S5",
+    "page": "paper-2025",
+    "level": "难",
+    "answer": "0",
+    "expect": 1,
+    "verify": "float(max(abs(atan(1/h)) for h in [1e-2,1e-3,1e-4,1e-5,1e-6]) < pi/2 + 1e-9)",
+    "note": "f'(0)=lim x·arctan(1/x)=0，因 arctan 有界"
+  }
+]
