@@ -55,12 +55,11 @@
 
   /* ── 倒计时 ── */
   var cd = document.getElementById('countdown');
-  if (cd && EXAM) {
+  function paintCountdown() {
+    if (!cd || !EXAM) return;
     var exam = new Date(EXAM + 'T09:00:00');
-    var now = new Date();
-    var days = Math.ceil((exam - now) / 86400000);
-    var pass = read(LS.progress, {});
-    var done = Object.keys(pass).filter(function (k) { return pass[k] >= 2; }).length;
+    var days = Math.ceil((exam - new Date()) / 86400000);
+    var done = Object.keys(progress).filter(function (k) { return progress[k] >= 2; }).length;
     var total = document.querySelectorAll('.nav-item').length;
     if (days > 0) {
       cd.innerHTML = '<strong>距期中约 ' + days + ' 天</strong>' +
@@ -71,6 +70,7 @@
       cd.innerHTML = '<strong>期中已结束</strong><span class="cd-sub">转向期末续学：第三章起</span>';
     }
   }
+  paintCountdown();
 
   /* ── 进度 ── */
   function levelOf(slug) { return progress[slug] || 0; }
@@ -104,8 +104,7 @@
         else progress[slug] = lv;
         write(LS.progress, progress);
         paintBar();
-        var cdb = document.getElementById('countdown');
-        if (cdb) { /* 重新算掌握数 */ }
+        paintCountdown();
       });
     });
     paintBar();
@@ -136,7 +135,7 @@
           id: id,
           text: text,
           page: document.querySelector('.page-head h1') ? document.querySelector('.page-head h1').textContent : document.title,
-          url: location.pathname,
+          url: location.pathname + '#p-' + id,
           at: new Date().toISOString().slice(0, 10)
         };
         btn.classList.add('on');
@@ -256,8 +255,10 @@
   if (table) {
     fetch(BASE + '/manifest.json').then(function (r) { return r.json(); }).then(function (items) {
       var groups = {};
+      var groupTitle = {};
       items.forEach(function (it) {
         (groups[it.chapter] = groups[it.chapter] || []).push(it);
+        if (!groupTitle[it.chapter]) groupTitle[it.chapter] = it.ctitle || it.chapter;
       });
       var total = items.length;
       var counts = [0, 0, 0, 0];
@@ -269,7 +270,7 @@
         '<p class="muted" style="font-size:.8rem">“会做”与“熟练”合计。未看 ' + counts[0] + ' · 看过 ' + counts[1] +
         ' · 会做 ' + counts[2] + ' · 熟练 ' + counts[3] + ' / 共 ' + total + ' 节</p>';
       Object.keys(groups).forEach(function (ch) {
-        html += '<h3 style="margin-top:1.6rem">' + ch + '</h3>';
+        html += '<h3 style="margin-top:1.6rem">' + esc(groupTitle[ch] || ch) + '</h3>';
         groups[ch].forEach(function (it) {
           var lv = levelOf(it.slug);
           html += '<div class="bar-row"><a href="' + it.url + '" style="flex:1">' + esc(it.title) + '</a>' +

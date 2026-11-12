@@ -128,6 +128,7 @@ $$\lim_{n\to\infty}\frac{2+\frac3n-\frac1{n^2}}{5-\frac1n+\frac4{n^2}}=\frac25 .
 注意选项 $C$ 的诱惑：把 $1$ 和 $2$ 平均成 $\dfrac32$。数列极限不是取平均，子列极限不同就是发散。
 :::
 :::
+:::
 
 :::problem id=1.2-03 level=中 source="本站自编"
 求 $\lim\limits_{n\to\infty}\left(\dfrac{1}{n^2}+\dfrac{2}{n^2}+\cdots+\dfrac{n}{n^2}\right)$。

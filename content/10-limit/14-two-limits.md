@@ -46,6 +46,8 @@ $$1<\frac{x}{\sin x}<\frac{1}{\cos x} .$$
 
 $$\lim_{x\to0}\frac{\sin 3x}{x}=\lim_{x\to0}\frac{\sin 3x}{3x}\cdot 3=1\cdot 3=3$$
 
+<!-- ex: 1.4-e2 -->
+
 $$\lim_{x\to0}\frac{\tan x}{x}=\lim_{x\to0}\frac{\sin x}{x}\cdot\frac{1}{\cos x}=1\cdot1=1$$
 
 :::trap
@@ -65,6 +67,8 @@ $$
 **推广**：只要 $\square\to0$，就有 $(1+\square)^{\frac1\square}\to e$。
 
 $$\lim_{x\to0}(1+2x)^{\frac1x}=\lim_{x\to0}\left[(1+2x)^{\frac{1}{2x}}\right]^{2}=e^{2}$$
+
+<!-- ex: 1.4-e1 -->
 
 方括号内是 $(1+\square)^{1/\square}$ 的形状（$\square=2x$），整体再取 $2$ 次方。
 
@@ -106,6 +110,8 @@ $$L=\lim_{x\to\infty}x\cdot\frac{3}{x-1}=3,\qquad \text{原式}=e^{3}.$$
 夹逼的典型场景：$\sin$、$\cos$、$(-1)^n$ 这类**有界但震荡**的量乘上一个无穷小。
 
 $$\lim_{x\to0}x\sin\frac1x=0$$
+
+<!-- ex: 1.4-e3 -->
 
 理由：$\left\lvert x\sin\frac1x\right\rvert\le\lvert x\rvert\to0$。"无穷小 × 有界量 = 无穷小"这句话在 2025–2026 的解答题第 5 题里直接是得分点。
 

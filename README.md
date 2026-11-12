@@ -4,7 +4,7 @@
 
 - 期中只考第一章、第二章（本校大纲：48% + 45% + 综合 7%，90 分钟）
 - 四年真题的共同点：七八个模板就能拿到 80 分
-- 所有计算题的答案都用脚本复算过（66 道）
+- 题库 75 条（67 题 + 8 个正文例题）：52 条直接复算答案、14 条用等价界定间接验证、9 条答案靠人工核对（脚本只验形式）
 
 ## 站点结构
 
@@ -20,7 +20,7 @@ content/99-meta/       关于与来源
 
 ## 本地构建
 
-需要 Node 18+（开发时用的 v24）。
+需要 Node 22+（依赖链里 `commander` 要求 >=22.12；开发时用的 v24）。
 
 ```bash
 npm install
@@ -38,7 +38,7 @@ npm run verify     # 复算题库里每一道题的答案（需要 Python 3.8+�
 ## 技术选择
 
 - **静态站，零前端框架。** `scripts/build.mjs` 读 `content/*.md`，用 `marked` 转 HTML，用 `katex` 在**构建时**把公式渲染成 HTML —— 页面不依赖任何 CDN，离线可读。
-- **题目答案机器可验。** 每道数值题在 `kb/problems*.json` 里有 `verify` 字段（一段 Python 表达式），`scripts/verify.py` 会重新算一遍并与登记的答案比对。这样正文和答案不可能对不上。
+- **题目答案机器可验，且强度分级。** 每道题在 `kb/problems*.json` 里有 `verify` 字段（一段 Python 表达式）与 `verifyKind` 标注：`numeric` 直接算出答案并与 `answer` 比对；`proxy` 用等价命题或不等式间接验证；`manual` 形式化检查，答案靠人工核对。`scripts/verify.py` 会打印三类各多少条，不会把 `manual` 说成"已复算"。
 - **概念台账**（`kb/concepts.json`）保证每个概念只有一个首次定义节，防止前后章定义漂移。
 
 ## 部署
@@ -64,7 +64,7 @@ npm run verify     # 复算题库里每一道题的答案（需要 Python 3.8+�
 
 ### 子路径部署
 
-如果部署在子路径（如 `https://user.github.io/gaoshu/`），把 `site.json` 里的 `"base"` 改成 `"/gaoshu"` 再构建——站内链接会自动加前缀。
+如果部署在子路径（如 `https://user.github.io/gaoshu/`），把 `site.json` 里的 `"base"` 改成 `"/gaoshu"` 再构建——构建时会统一给站内绝对链接补前缀，`node scripts/check-base.mjs` 会断言"缺前缀 = 0"。**没绑域名就一定跑在项目页子路径下，这步不能省。**
 
 ## 资料
 

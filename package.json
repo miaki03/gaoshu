@@ -5,11 +5,16 @@
   "description": "高等数学 A-1 期中冲刺与长期学习站点（静态站，零前端框架）",
   "type": "module",
   "scripts": {
-    "build": "node scripts/build.mjs",
+    "build": "node scripts/build.mjs --strict",
+    "build:loose": "node scripts/build.mjs",
     "check": "node scripts/check.mjs",
     "verify": "python scripts/verify.py",
+    "check:base": "node scripts/check-base.mjs",
     "preview": "node scripts/serve.mjs",
-    "all": "node scripts/build.mjs && node scripts/check.mjs"
+    "all": "node scripts/build.mjs --strict && node scripts/check.mjs && node scripts/check-base.mjs && python scripts/verify.py"
+  },
+  "engines": {
+    "node": ">=22.12.0"
   },
   "repository": {
     "type": "git",

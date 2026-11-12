@@ -26,6 +26,12 @@ import re
 import sys
 from fractions import Fraction
 
+# Windows 控制台默认不是 UTF-8，直接 print 中文会乱码
+try:
+    sys.stdout.reconfigure(encoding='utf-8')
+except Exception:  # noqa: BLE001
+    pass
+
 PI = math.pi
 E = math.e
 INF = float('inf')
@@ -174,7 +180,7 @@ def main(argv):
     kbdir = os.path.join(root, 'kb')
     items = []
     for name in sorted(os.listdir(kbdir)):
-        if name.startswith('problems') and name.endswith('.json'):
+        if (name.startswith('problems') or name.startswith('examples')) and name.endswith('.json'):
             items.extend(json.load(open(os.path.join(kbdir, name), encoding='utf-8')))
 
     prefix = argv[1] if len(argv) > 1 else None
@@ -192,24 +198,50 @@ def main(argv):
     }
 
     ok = fail = 0
+    kinds = {'numeric': 0, 'proxy': 0, 'manual': 0}
     for it in sel:
+        kind = it.get('verifyKind', 'numeric')
+        kinds[kind] = kinds.get(kind, 0) + 1
         try:
             want = parse_expect(it)
             got = eval(it['verify'], env)  # noqa: S307
             got = float(got)
             tol = float(it.get('tol', 1e-6))
-            if close(got, want, tol):
+            ok_now = close(got, want, tol)
+
+            # 对 numeric 类：answer 里写的数必须与 expect 一致，
+            # 否则"显示给学生的答案"和"脚本复算的答案"可以各说各话。
+            if ok_now and kind == 'numeric':
+                a = str(it.get('answer', '')).strip()
+                m = re.fullmatch(r'(-?\d+)\s*/\s*(\d+)', a)
+                if m:
+                    shown = int(m.group(1)) / int(m.group(2))
+                elif re.fullmatch(r'-?\d+(\.\d+)?', a):
+                    shown = float(a)
+                else:
+                    shown = None
+                if shown is not None and not close(shown, want, tol):
+                    ok_now = False
+                    print(f"✗ {it['id']}: answer 写的是 {a}，但复算结果是 {want:g}")
+
+            if ok_now:
                 ok += 1
             else:
                 fail += 1
-                print(f"✗ {it['id']}: 期望 {it['answer']} = {want:g}，复算得到 {got:g}")
-                print(f"    verify: {it['verify']}")
+                if not close(got, want, tol):
+                    print(f"✗ {it['id']}: 期望 {it['answer']} = {want:g}，复算得到 {got:g}")
+                    print(f"    verify: {it['verify']}")
         except Exception as exc:  # noqa: BLE001
             fail += 1
             print(f"✗ {it['id']}: 复算出错 — {type(exc).__name__}: {exc}")
             print(f"    verify: {it['verify']}")
 
     print(f"\n复算完成：{ok} 通过 · {fail} 失败 · 共 {len(sel)} 题")
+    print(f"  按验证强度：numeric {kinds.get('numeric', 0)}（直接算出答案）"
+          f" · proxy {kinds.get('proxy', 0)}（等价界定，间接）"
+          f" · manual {kinds.get('manual', 0)}（形式化，答案靠人工核对）")
+    if kinds.get('manual', 0):
+        print("  ⚠ manual 类的答案不由脚本保证，改动这些题时请人工复核。")
     return 1 if fail else 0
 
 

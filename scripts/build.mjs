@@ -8,10 +8,11 @@ import katex from 'katex';
 
 const ROOT = path.dirname(fileURLToPath(import.meta.url)).replace(/\\/g, '/');
 const ROOT_DIR = path.resolve(ROOT, '..');
-const OUT = path.join(ROOT_DIR, 'dist');
+// 允许用环境变量覆盖，供子路径回归测试使用（scripts/check-base.mjs）
+const OUT = process.env.GS_OUT ? path.resolve(ROOT_DIR, process.env.GS_OUT) : path.join(ROOT_DIR, 'dist');
 const CONTENT = path.join(ROOT_DIR, 'content');
 const site = JSON.parse(fs.readFileSync(path.join(ROOT_DIR, 'site.json'), 'utf8'));
-const BASE = (site.base || '').replace(/\/$/, '');
+const BASE = ((process.env.GS_BASE ?? site.base) || '').replace(/\/$/, '');
 
 const warn = [];
 const warnOnce = (m) => { if (!warn.includes(m)) warn.push(m); };
@@ -534,6 +535,7 @@ write('progress/index.html', shell({
       <button class="btn ghost" id="resetBtn">清空</button>
       <input type="file" id="importFile" accept="application/json" hidden>
     </div>
+    <noscript><p class="callout-note">这个页面靠浏览器脚本读取本机进度。你的浏览器关闭了 JavaScript，所以这里没有内容——但正文和题目答案不受影响，照常可以读。</p></noscript>
     <div id="progressTable"></div>
   </div>`,
 }));
@@ -542,7 +544,7 @@ write('errors/index.html', shell({
   title: '错题本',
   activeSlug: '',
   body: `<header class="page-head"><h1>错题本</h1><p class="lede">在题目卡片上点「记错」就会收进这里。考前只看这个。</p></header>
-  <div class="page-body"><div id="errorList"></div></div>`,
+  <div class="page-body"><noscript><p class="callout-note">错题本存在本机浏览器里，需要 JavaScript。关闭脚本时这里为空，但原题不受影响。</p></noscript><div id="errorList"></div></div>`,
 }));
 
 /* about */
@@ -564,7 +566,11 @@ const index = ordered.concat(sections.filter((p) => p.type !== 'section' && p.ty
   return { t: p.title, u: url('s/' + p.slug), d: p.summary || '', b: text, p: p.part };
 });
 write('search.json', JSON.stringify(index));
-write('manifest.json', JSON.stringify(ordered.map((p) => ({ slug: p.slug, title: p.title, url: url('s/' + p.slug), part: p.part, chapter: p.chapter }))));
+write('manifest.json', JSON.stringify(ordered.map((p) => {
+  const part = site.parts.find((x) => x.id === p.part);
+  const ch = part && part.chapters.find((c) => c.id === p.chapter);
+  return { slug: p.slug, title: p.title, url: url('s/' + p.slug), part: p.part, chapter: p.chapter, ctitle: ch ? ch.title : p.chapter };
+})));
 
 /* 404 */
 write('404.html', shell({
@@ -583,32 +589,99 @@ fs.cpSync(path.join(ROOT_DIR, 'node_modules', 'katex', 'dist', 'fonts'), path.jo
 console.log(`\n构建完成: ${OUT}`);
 console.log(`  页面 ${written.length} · 搜索条目 ${index.length} · 章节 ${nav.reduce((n, p) => n + p.chapters.length, 0)}`);
 
-// internal link check
+// 内部链接与锚点校验：不只看 href="/…"，也看相对链接、#锚点、以及 JSON 里的 URL。
 const allFiles = [];
 (function w(d) { for (const e of fs.readdirSync(d, { withFileTypes: true })) { const p = path.join(d, e.name); e.isDirectory() ? w(p) : allFiles.push(p); } })(OUT);
 const htmlFiles = allFiles.filter((f) => f.endsWith('.html'));
-let broken = 0;
+const rel = (f) => path.relative(OUT, f).replace(/\\/g, '/');
+
+// 预扫描所有 html 的 id，供锚点校验
+const idsByFile = new Map();
 for (const f of htmlFiles) {
   const h = fs.readFileSync(f, 'utf8');
-  for (const m of h.matchAll(/(?:href|src)="(\/[^"#?]*)/g)) {
-    let target = m[1];
-    try { target = decodeURIComponent(target); } catch { /* 保留原样 */ }
-    if (BASE && target.startsWith(BASE)) target = target.slice(BASE.length);
-    const clean = target.replace(/^\//, '');
-    if (!clean || /\.[a-z0-9]+$/i.test(clean) && !clean.endsWith('.html')) {
-      const p = path.join(OUT, clean);
-      if (!fs.existsSync(p)) { warn.push(`坏链接 ${m[1]} ← ${path.relative(OUT, f)}`); broken++; }
+  idsByFile.set(rel(f), new Set([...h.matchAll(/\sid="([^"]+)"/g)].map((m) => m[1])));
+}
+
+const isExternal = (u) => /^(?:[a-z][a-z0-9+.-]*:|\/\/)/i.test(u);
+const isDirLike = (p) => p === '' || p.endsWith('/') || !/\.[a-z0-9]+$/i.test(p);
+const warnLinks = [];
+
+function resolveTarget(fromFile, urlPath) {
+  // urlPath 已去掉 query/fragment，且已剥掉 BASE
+  let p = urlPath;
+  if (!p.startsWith('/')) {
+    const dir = path.posix.dirname('/' + rel(fromFile));
+    p = path.posix.normalize(dir + '/' + p);
+  }
+  p = p.replace(/^\/+/, '');
+  if (isDirLike(p)) p = path.posix.join(p, 'index.html');
+  return p;
+}
+
+for (const f of htmlFiles) {
+  const h = fs.readFileSync(f, 'utf8');
+  const from = rel(f);
+  for (const m of h.matchAll(/(?:href|src)="([^"]+)"/g)) {
+    let raw = m[1];
+    if (!raw || isExternal(raw) || raw.startsWith('#')) continue;
+    let target = raw;
+    try { target = decodeURIComponent(raw); } catch { /* 保留原样 */ }
+    const hashAt = target.indexOf('#');
+    const fragment = hashAt >= 0 ? target.slice(hashAt + 1) : '';
+    let pathPart = hashAt >= 0 ? target.slice(0, hashAt) : target;
+    const qAt = pathPart.indexOf('?');
+    if (qAt >= 0) pathPart = pathPart.slice(0, qAt);
+
+    if (!pathPart) {
+      // 纯锚点
+      if (fragment && !idsByFile.get(from)?.has(fragment)) {
+        warnLinks.push(`坏锚点 #${fragment} ← ${from}`);
+      }
       continue;
     }
-    const asDir = path.join(OUT, clean, 'index.html');
-    const asFile = path.join(OUT, clean);
-    if (!fs.existsSync(asDir) && !fs.existsSync(asFile)) { warn.push(`坏链接 ${m[1]} ← ${path.relative(OUT, f)}`); broken++; }
+    if (BASE && pathPart.startsWith(BASE + '/')) pathPart = pathPart.slice(BASE.length);
+    else if (BASE && pathPart === BASE) pathPart = '/';
+
+    const targetRel = resolveTarget(f, pathPart);
+    const abs = path.join(OUT, targetRel);
+    if (!fs.existsSync(abs)) {
+      warnLinks.push(`坏链接 ${raw} ← ${from}`);
+      continue;
+    }
+    if (fragment && targetRel.endsWith('.html')) {
+      const ids = idsByFile.get(targetRel);
+      if (ids && !ids.has(fragment)) warnLinks.push(`坏锚点 ${raw} ← ${from}`);
+    }
   }
 }
+
+// JSON 里的 URL（search.json / manifest.json）
+for (const name of ['search.json', 'manifest.json']) {
+  const p = path.join(OUT, name);
+  if (!fs.existsSync(p)) continue;
+  let arr;
+  try { arr = JSON.parse(fs.readFileSync(p, 'utf8')); } catch { warn.push(`${name} 不是合法 JSON`); continue; }
+  for (const item of arr) {
+    const u = item.u || item.url;
+    if (!u) continue;
+    let pathPart = u;
+    if (BASE && pathPart.startsWith(BASE + '/')) pathPart = pathPart.slice(BASE.length);
+    const targetRel = resolveTarget(p, pathPart);
+    if (!fs.existsSync(path.join(OUT, targetRel))) warnLinks.push(`坏链接 ${u} ← ${name}`);
+  }
+}
+
+warn.push(...warnLinks);
+const broken = warnLinks.length;
+
 if (warn.length) {
   console.log(`\n⚠ ${warn.length} 条警告:`);
   [...new Set(warn)].slice(0, 40).forEach((w) => console.log('  - ' + w));
+  if (warn.length > 40) console.log(`  … 另有 ${warn.length - 40} 条`);
 } else {
-  console.log('  ✓ 无警告：内部链接全部有效');
+  console.log(`  ✓ 无警告：${htmlFiles.length} 个页面的链接与锚点全部有效`);
 }
-if (process.argv.includes('--strict') && warn.length) process.exit(1);
+if (process.argv.includes('--strict') && warn.length) {
+  console.log('\n--strict: 有警告即以失败退出');
+  process.exit(1);
+}

@@ -22,7 +22,7 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
           cache: npm
 
       - name: 安装依赖
@@ -31,11 +31,14 @@ jobs:
       - name: 复算题库答案
         run: python3 scripts/verify.py
 
-      - name: 结构校验
+      - name: 结构校验（front matter / 概念台账 / 块配平 / 题库覆盖）
         run: node scripts/check.mjs
 
-      - name: 构建站点
-        run: node scripts/build.mjs
+      - name: 构建站点（坏链或坏锚点即失败）
+        run: node scripts/build.mjs --strict
+
+      - name: 子路径部署回归（base=/gaoshu 下不允许有漏加前缀的链接）
+        run: node scripts/check-base.mjs
 
       - uses: actions/configure-pages@v5
 

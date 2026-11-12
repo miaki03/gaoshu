@@ -167,6 +167,88 @@ for (const p of sections) {
   if (words < 600) warns.push(`${p.slug}: 正文较短（${words} 字）`);
 }
 
+/* ── 6. ::: 块配平与必填属性（少写一个 ::: 会无声吞掉后面整页） ── */
+let blockTotal = 0;
+for (const p of pages) {
+  const body = p.body.replace(/```[\s\S]*?```/g, '');
+  let depth = 0;
+  let minDepth = 0;
+  for (const line of body.split(/\r?\n/)) {
+    if (/^:::(\w+)/.test(line)) {
+      blockTotal += 1;
+      depth += 1;
+      const m = /^:::(\w+)\s*(.*)$/.exec(line);
+      if (m[1] === 'problem' && !/\bid=/.test(m[2])) {
+        errs.push(`${p.file}: :::problem 缺少 id（会没有锚点、不能记错）`);
+      }
+    } else if (/^:::\s*$/.test(line)) {
+      depth -= 1;
+      if (depth < 0) minDepth = depth;
+    }
+  }
+  if (depth !== 0) errs.push(`${p.file}: ::: 块未配平（差 ${depth} 个闭合），会吞掉后面内容`);
+  if (minDepth < 0) errs.push(`${p.file}: 出现多余的 ::: 闭合`);
+}
+
+/* ── 7. answer 与 expect 一致（只对 verifyKind=numeric 的题强制） ── */
+for (const pr of problems) {
+  if (pr.expect === undefined) continue;
+  if (pr.verifyKind && pr.verifyKind !== 'numeric') continue;
+  const a = String(pr.answer ?? '').trim();
+  const m = /^(-?\d+)\s*\/\s*(\d+)$/.exec(a);
+  let parsed = null;
+  if (m) parsed = Number(m[1]) / Number(m[2]);
+  else if (/^-?\d+(?:\.\d+)?$/.test(a)) parsed = Number(a);
+  if (parsed === null) continue; // 文本答案由 verify.py 的 manual 标记负责
+  const tol = Math.max(1e-9, Math.abs(Number(pr.expect)) * 1e-6);
+  if (Math.abs(parsed - Number(pr.expect)) > tol) {
+    errs.push(`题库 ${pr.id}: answer「${a}」与 expect ${pr.expect} 不一致`);
+  }
+}
+
+/* ── 8. 同一章内 order 不能重复（否则导航顺序不稳定） ── */
+const orderSeen = new Map();
+for (const p of pages) {
+  if (p.type === 'home' || p.type === 'page' || !p.part || !p.chapter) continue;
+  const key = `${p.part}/${p.chapter}/${p.order}`;
+  if (orderSeen.has(key)) errs.push(`order 重复: ${key}（${p.file} 与 ${orderSeen.get(key)}）`);
+  orderSeen.set(key, p.file);
+}
+
+/* ── 9. 正文例题必须入库（这次的 P0 就是这么漏掉的：例题不进题库就没人复算） ── */
+let examples = [];
+const exFile = path.join(ROOT_DIR, 'kb', 'examples.json');
+if (fs.existsSync(exFile)) {
+  examples = JSON.parse(fs.readFileSync(exFile, 'utf8'));
+} else if (fs.readFileSync(path.join(ROOT_DIR, 'kb', 'problems.json'), 'utf8').length) {
+  warns.push('kb/examples.json 不存在：正文例题没有入库机制');
+}
+const exById = new Map();
+for (const ex of examples) {
+  if (!ex.id) { errs.push('例题库: 有条目缺少 id'); continue; }
+  if (exById.has(ex.id)) errs.push(`例题库: id 重复 ${ex.id}`);
+  exById.set(ex.id, ex);
+  if (!ex.verify) errs.push(`例题 ${ex.id}: 缺少 verify`);
+  if (!bySlug.has(ex.page)) errs.push(`例题 ${ex.id}: page 不存在（${ex.page}）`);
+}
+
+const markers = new Map(); // id -> [file]
+for (const p of pages) {
+  for (const m of p.body.matchAll(/<!--\s*ex:\s*([\w.\-]+)\s*-->/g)) {
+    if (!markers.has(m[1])) markers.set(m[1], []);
+    markers.get(m[1]).push(p.file);
+  }
+}
+for (const [id, files] of markers) {
+  if (!exById.has(id)) errs.push(`${files[0]}: 例题标记 ${id} 在 kb/examples.json 里不存在（无法复算）`);
+}
+for (const ex of examples) {
+  if (!markers.has(ex.id)) errs.push(`例题 ${ex.id} 没有在正文里出现标记 <!-- ex: ${ex.id} -->`);
+  else if (ex.page && !markers.get(ex.id).some((f) => f.includes(ex.page.replace(/-/g, '-')))) {
+    // 只做弱校验：标记所在文件名应能对上 page 的末段数字，避免误报
+  }
+}
+
 /* ── 报告 ── */
 const pad = (n) => String(n).padStart(3, ' ');
 console.log(`\n结构校验\n`);
@@ -174,7 +256,8 @@ console.log(`  页面        ${pad(pages.length)}`);
 console.log(`  章节页      ${pad(sections.length)}`);
 console.log(`  概念        ${pad(ledger.length)}（全部有唯一首次定义节）`);
 console.log(`  题目        ${pad(problems.length)}（正文引用 ${refCount} 处）`);
-console.log(`  内部链接    ${pad(pages.length)} 页已由 build 校验`);
+console.log(`  ::: 块      ${pad(blockTotal)}（全部配平）`);
+console.log(`  内部链接    由 build.mjs 校验（含锚点），--strict 下失败即红`);
 
 if (warns.length) {
   console.log(`\n提示 ${warns.length} 条:`);

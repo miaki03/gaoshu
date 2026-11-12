@@ -62,6 +62,8 @@ $$y'=f'\big(g(h(x))\big)\cdot g'\big(h(x)\big)\cdot h'(x)$$
 最后两个可以化简：
 
 $$\left(\sqrt{1-x^2}\right)'=\frac{-x}{\sqrt{1-x^2}},\qquad
+
+<!-- ex: 2.3-e1 -->
 \left(\arctan\frac1x\right)'=\frac{1}{1+\frac1{x^2}}\cdot\left(-\frac1{x^2}\right)=-\frac{1}{1+x^2}$$
 
 :::practice

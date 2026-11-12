@@ -489,3 +489,47 @@ details.g-block.ans { padding-bottom: 0; }
   .g-block.ans { break-inside: avoid; }
   body { font-size: 11pt; }
 }
+
+/* ── 可访问性与手机可用性修正（2026-11 审计后补） ─────────── */
+
+/* 键盘焦点必须可见：之前全站没有 :focus-visible，搜索框还写死 outline:none */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+.search-box input:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+
+/* 深色模式下彩色标签是浅色底 + 白字，对比度只有 2.0–2.4:1；改成深字 */
+[data-theme="dark"] .g-label,
+[data-theme="dark"] .cb-btns button.on,
+[data-theme="dark"] .brand-mark {
+  color: #14161a;
+}
+@media (prefers-color-scheme: dark) {
+  [data-theme="auto"] .g-label,
+  [data-theme="auto"] .cb-btns button.on,
+  [data-theme="auto"] .brand-mark {
+    color: #14161a;
+  }
+}
+
+/* 正文里的 muted 小字在 4.37:1，略低于 4.5；提高一档 */
+:root { --muted: #656c78; }
+[data-theme="dark"] { --muted: #a3aab6; }
+
+/* 触摸目标：手机上要 ≥44px。「记错」原来只有 24px 高 */
+@media (max-width: 900px) {
+  .p-tools button { min-height: 44px; padding: 0 .7rem; font-size: .8rem; }
+  .cb-btns button { min-height: 44px; min-width: 60px; font-size: .82rem; }
+  .icon-btn { min-height: 44px; min-width: 44px; justify-content: center; }
+  .nav-item { padding: .6rem .5rem; }
+  .g-block.ans > summary { min-height: 44px; }
+}
+
+/* 无脚本提示 */
+.callout-note {
+  border-left: 3px solid var(--warm);
+  background: var(--warm-soft);
+  padding: .7rem .9rem; border-radius: 0 8px 8px 0; font-size: .85rem;
+}

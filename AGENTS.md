@@ -28,22 +28,27 @@
 | 截图 | Edge headless 也被沙箱挡住（mojo 命名管道），**无法截图自检**，只能靠结构与链接校验 |
 | 素材格式 | 期中卷的公式是 **MathType OLE + WMF 图片**（不在文本里），文本提取会得到 `【EQ:rIdN】` 占位 |
 
-### 两个必须记住的坑
+### 必须记住的坑
 
-- **PowerShell 5.1 的 `Set-Content -Encoding utf8` 会写 BOM**，会把 front matter 的 `---` 变成 `\ufeff---`，导致整页不参与构建。改文件用
+- **PowerShell 5.1 的 `Set-Content -Encoding utf8` 会写 BOM**。构建脚本现在会 strip BOM（`build.mjs` 与 `check.mjs` 都做了），所以带 BOM 不再让整页消失；但前端工具、diff、以及别的工具链仍可能被 BOM 坑到。改文件统一用
   `[System.IO.File]::WriteAllText($p, $t, (New-Object System.Text.UTF8Encoding($false)))`。
 - **`$home` 是 PowerShell 只读自动变量**，用 `$homePath` 之类。
+- **沙箱里不能给子进程接管道**：Node 的 `child_process` 用默认 `stdio: 'pipe'` 会 EPERM。要 spawn 子进程就传 `stdio: 'inherit'`（`scripts/check-base.mjs` 就是这么做的）。
+- **Python 输出中文**：`verify.py` 已加 `sys.stdout.reconfigure(encoding='utf-8')`，不加 `PYTHONIOENCODING` 也不会乱码；新写的脚本照做。
 
 ## 命令
 
 ```bash
-node scripts/build.mjs      # 构建到 dist/，并校验所有内部链接
-node scripts/check.mjs      # 结构校验：front matter / 概念台账 / 题库 / 复用信号
-python scripts/verify.py    # 复算题库里每一道题的答案
+npm run all                 # 四道关：strict 构建 → 结构校验 → 子路径回归 → 答案复算
+node scripts/build.mjs --strict   # 单独构建（坏链/坏锚点即失败）
+node scripts/check.mjs      # 结构校验：front matter / 概念台账 / ::: 配平 / 题库覆盖 / 例题标记
+node scripts/check-base.mjs # 以 base=/gaoshu 构建，断言"漏加前缀的链接 = 0"
+python scripts/verify.py    # 复算题库与例题；打印 numeric/proxy/manual 三类数量
 node scripts/serve.mjs      # 本地预览 http://127.0.0.1:4173/
 ```
 
-**提交前三个都跑，全绿再提交。**
+**提交前跑 `npm run all`，四道关全绿再提交。**
+`--strict` 的意义：以前坏链只打警告、退出码仍是 0，等于"绿"没有守卫力（审计实测：只改正文答案也能全绿）。现在会拦住。
 
 ## 推送（这台机器上怎么推）
 
@@ -67,8 +72,9 @@ node scripts/serve.mjs      # 本地预览 http://127.0.0.1:4173/
 4. 按四件套顺序写：锚点 → 机制 → 速查 → 题；
 5. 题目**先入题库**（`kb/problems*.json`），写 `verify` 字段，跑 `python scripts/verify.py` 确认答案对，再写进正文；
 6. 若引入新概念，登记到 `kb/concepts.json`（每个概念只能有一个首次定义节），并在该节 front matter 的 `concepts:` 里声明；
-7. 跑 `node scripts/check.mjs`，失败修到通过；
-8. 一项目一次提交，提交信息用 `feat:` / `fix:` / `docs:` 前缀并写明节号。
+7. **正文出现的可计算例子（写在「机制」里的那种）必须入库**：在 `kb/examples.json` 登记一条带 `verify` 的记录，并在正文例子后面插 `<!-- ex: <id> -->` 标记。`check.mjs` 会校验双向一致。这次的 P0 就是因为例题不入库、没人复算才漏掉的；
+8. 跑 `npm run all`，四道关全过；
+9. 一项目一次提交，提交信息用 `feat:` / `fix:` / `docs:` 前缀并写明节号。
 
 ## 数学正确性是硬要求
 

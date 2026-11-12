@@ -1,0 +1,82 @@
+[
+  {
+    "id": "1.4-e1",
+    "page": "1-4-two-limits",
+    "claim": "机制里推 $(1+2x)^{1/x}\\to e^2$",
+    "answer": "e^2",
+    "expect": 7.38905609893065,
+    "verify": "lim(lambda x: (1+2*x)**(1/x), 0)",
+    "verifyKind": "numeric",
+    "note": "凑成 (1+□)^{1/□}，□=2x，整体取 2 次方"
+  },
+  {
+    "id": "1.4-e2",
+    "page": "1-4-two-limits",
+    "claim": "机制里推 $\\lim\\sin 3x/x=3$",
+    "answer": "3",
+    "expect": 3,
+    "verify": "lim(lambda x: sin(3*x)/x, 0)",
+    "verifyKind": "numeric",
+    "note": "把 sin3x/x 凑成 (sin3x/3x)·3"
+  },
+  {
+    "id": "1.4-e3",
+    "page": "1-4-two-limits",
+    "claim": "机制里用夹逼说明 $x\\sin(1/x)\\to0$",
+    "answer": "0",
+    "expect": 1,
+    "verify": "float(max(abs(h*sin(1/h)) for h in [1e-2,1e-3,1e-4,1e-5]) <= 1e-2)",
+    "verifyKind": "proxy",
+    "note": "|h·sin(1/h)| ≤ |h| 控制，故极限为 0（振荡型不能直接数值外推）"
+  },
+  {
+    "id": "1.6-e1",
+    "page": "1-6-continuity",
+    "claim": "机制里说 $e^{1/x}$ 在 0 处左极限 0、右极限 +∞",
+    "answer": "左 0，右 +∞",
+    "expect": 1,
+    "verify": "float(abs(lim(lambda x: exp(1/x), 0, side='left')) < 1e-6)",
+    "verifyKind": "proxy",
+    "note": "左极限数值验证为 0；右极限 exp(1/h) 在 h=1e-2 时已是 e^100，超出双精度范围，故只作说明不当数值断言"
+  },
+  {
+    "id": "2.8-e1",
+    "page": "2-8-differential",
+    "claim": "机制里说 $x^{2/3}$ 在 0 处两侧导数都趋于 ±∞（才有铅垂切线）",
+    "answer": "两侧 |y'|→∞",
+    "expect": 1,
+    "verify": "float(abs(((1e-8)**(2/3)/1e-8) / ((1e-4)**(2/3)/1e-4) - (1e4)**(1/3)) < 1e-6)",
+    "verifyKind": "proxy",
+    "note": "差商 f(h)/h = h^{-1/3}：h 缩小 10^4 倍时差商应放大 (10^4)^{1/3}=21.54 倍（实测吻合）→ 导数无界；左导 −∞、右导 +∞"
+  },
+  {
+    "id": "2.6-e1",
+    "page": "2-6-parametric",
+    "claim": "机制里用消参 $y=x^{3/2}$ 反验 $d^2y/dx^2=3/(4t)$",
+    "answer": "3/(4t)",
+    "expect": 0.375,
+    "verify": "d2(lambda x: x**1.5, 4)",
+    "verifyKind": "numeric",
+    "note": "t=2 时 x=4，两条路径都得到 3/8"
+  },
+  {
+    "id": "1.7-e1",
+    "page": "1-7-continuous-props",
+    "claim": "机制里验证 $f(x)=x^3+2x-1$ 在 (0,1) 有零点",
+    "answer": "(0,1)",
+    "expect": 1,
+    "verify": "float((lambda f: f(0) < 0 < f(1))(lambda x: x**3 + 2*x - 1))",
+    "verifyKind": "proxy",
+    "note": "端点异号 + 多项式连续 → 零点定理"
+  },
+  {
+    "id": "2.3-e1",
+    "page": "2-3-rules",
+    "claim": "机制里推 $\\left(\\sqrt{1-x^2}\\right)'=-x/\\sqrt{1-x^2}$",
+    "answer": "-x/√(1-x²)",
+    "expect": -0.5773502691896257,
+    "verify": "d1(lambda x: sqrt(1-x*x), 0.5)",
+    "verifyKind": "numeric",
+    "note": "在 x=0.5 处为 -0.5/√0.75 = -1/√3"
+  }
+]
