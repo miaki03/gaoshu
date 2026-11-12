@@ -413,13 +413,22 @@ function crumbsFor(p) {
 }
 
 /* ---------------- write pages ---------------- */
+// 正文里手写的站内链接是 /s/xxx 这种根绝对路径；部署到子路径时统一补 BASE 前缀。
+// 只处理单个 "/" 开头（排除 //外域、已带 BASE 的、纯锚点）。
+function prefixLinks(html) {
+  if (!BASE) return html;
+  const rest = BASE.slice(1).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const re = new RegExp('((?:href|src)=")/(?!\\/|' + rest + '(?:/|"|#|\\?))', 'g');
+  return html.replace(re, `$1${BASE}/`);
+}
+
 function rmrf(dir) { if (fs.existsSync(dir)) fs.rmSync(dir, { recursive: true, force: true }); }
 rmrf(OUT);
 fs.mkdirSync(OUT, { recursive: true });
 const write = (rel, html) => {
   const full = path.join(OUT, rel);
   fs.mkdirSync(path.dirname(full), { recursive: true });
-  fs.writeFileSync(full, html);
+  fs.writeFileSync(full, prefixLinks(html));
 };
 
 for (const { p, html } of written) write(path.join('s', p.slug, 'index.html'), html);

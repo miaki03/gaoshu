@@ -92,6 +92,8 @@ $$(\arcsin x)'=\frac{1}{\cos y}=\frac{1}{\sqrt{1-\sin^2 y}}=\frac{1}{\sqrt{1-x^2
 | $\log_a x$ | $\dfrac{1}{x\ln a}$ | $\cot x$ | $-\csc^2x$ |
 | $\ln x$ | $\dfrac1x$ | $\sec x$ | $\sec x\tan x$ |
 | $\arcsin x$ | $\dfrac{1}{\sqrt{1-x^2}}$ | $\csc x$ | $-\csc x\cot x$ |
+
+其中 $\sec x=\dfrac{1}{\cos x}$、$\csc x=\dfrac{1}{\sin x}$、$\cot x=\dfrac{\cos x}{\sin x}$。这三个记号是 $\sin,\cos,\tan$ 的倒数形式，记不住时直接换成 $\dfrac{1}{\cos x}$ 再求导也行——结果一样，只是多写两行。
 | $\arccos x$ | $-\dfrac{1}{\sqrt{1-x^2}}$ | $\arctan x$ | $\dfrac{1}{1+x^2}$ |
 | $\operatorname{arccot}x$ | $-\dfrac{1}{1+x^2}$ | $\sqrt x$ | $\dfrac{1}{2\sqrt x}$ |
 
