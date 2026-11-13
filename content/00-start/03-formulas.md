@@ -55,12 +55,30 @@ $$
 | $\arcsin x-x$ | $\dfrac{x^3}{6}$ | 三阶 |
 
 :::trap
-两个最常见的错：<br>① $\sin(x^2)\sim x^2$ 对，但 $\sin x - x\sim 0$ 就错了（这时 $\sin x\sim x$ 精度不够，要用三阶）。<br>② 加减法里直接替换：$\lim\dfrac{\tan x-\sin x}{x^3}$ 若把 $\tan x\sim x$、$\sin x\sim x$ 代进去，得到 $0$，**错**。正确答案是 $\dfrac12$。加减中出现同阶抵消时，必须升到更高阶。
+两个最常见的错：<br>① 用一阶等价把 $\sin x-x$ 判成 $0$ 是错的：$\sin x\sim x$ 只保留到一阶，把二阶以上全丢了，而 $\sin x-x$ 恰好只剩下三阶项（$\sim-\frac{x^{3}}{6}$）。同阶项互相抵消时，必须升到下一阶。<br>② 加减法里直接替换：$\lim\dfrac{\tan x-\sin x}{x^3}$ 若把 $\tan x\sim x$、$\sin x\sim x$ 代进去，得到 $0$，**错**。正确答案是 $\dfrac12$。加减中出现同阶抵消时，必须升到更高阶。
+:::
+
+## 2.5 夹逼准则（每年至少一题）
+
+若在同一个极限过程下
+
+$g(x)\le f(x)\le h(x),\qquad \lim g(x)=\lim h(x)=A,$
+
+则 $\lim f(x)=A$。
+
+**什么时候用**：出现**有界但震荡**的量乘上无穷小，如 $\sin\dfrac1x$、$\cos\dfrac1x$、$(-1)^n$。这时不能直接算，要"夹"。
+
+$\lim_{x\to0}x\sin\frac1x=0\quad\text{因为}\ \left\lvert x\sin\frac1x\right\rvert\le\lvert x\rvert\to0$
+
+数列版：若 $2x_n\le y_n\le 2x_n+\dfrac1{2^n}$ 且 $x_n\to1$，则两端都趋于 $2$，故 $y_n\to2$（2025–2026 单选第 3 题就是这个）。
+
+:::trap
+夹逼要求**两端趋于同一个值**。两端极限不同就夹不出来（例如 $\dfrac1n\le$ 原式 $\le1$ 什么也说明不了）。
 :::
 
 ## 3 无穷小的阶
 
-设 $\alpha,\beta$ 都是同一过程的无穷小，$\lim\dfrac{\beta}{\alpha}=c$：
+设 $\alpha,\beta$ 都是同一过程的无穷小（**拿 $\alpha$ 当基准，$\beta$ 当被比较的那个**），$\lim\dfrac{\beta}{\alpha}=c$：
 
 | $c$ 的值 | 结论 |
 | --- | --- |
@@ -152,6 +170,15 @@ $$
 必须记住的两个变形（填空题直接考）：
 
 $$
+$
+f'_-(x_0)=\lim_{h\to0^-}\frac{f(x_0+h)-f(x_0)}{h},\qquad
+f'_+(x_0)=\lim_{h\to0^+}\frac{f(x_0+h)-f(x_0)}{h}
+$
+
+**左右导数的定义式**——分段函数在分界点、含绝对值时必须用它。两者**存在且相等**才可导；都存在但不相等，就是"左右导数都存在、但不可导"（如 $\lvert x\rvert$ 在 $0$）。
+
+下面这个变形是填空常客：
+
 \lim_{h\to 0}\frac{f(x_0+h)-f(x_0-h)}{2h}=f'(x_0)
 \qquad
 \lim_{h\to 0}\frac{f(x_0+ah)-f(x_0+bh)}{h}=(a-b)f'(x_0)
@@ -271,6 +298,10 @@ $$
 ## 13 微分与切线
 
 $$
+$\Delta y=f'(x_0)\,\Delta x+o(\Delta x),\qquad dy=f'(x_0)\,\Delta x$
+
+由此 $\Delta y-dy=o(\Delta x)$：**"函数增量减微分"是比 $\Delta x$ 高阶的无穷小**。这句话年年以单选形式出现（2023–2024 单选第 11 题）。
+
 dy=f'(x)\,dx,\qquad f'(x)=\frac{dy}{dx}
 $$
 

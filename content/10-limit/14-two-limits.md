@@ -74,7 +74,7 @@ $$\lim_{x\to0}(1+2x)^{\frac1x}=\lim_{x\to0}\left[(1+2x)^{\frac{1}{2x}}\right]^{2
 
 ### $1^{\infty}$ 型的通用算法
 
-设 $u\to1$，$v\to\infty$，则
+设 $u\to1$，$v\to\infty$，且 $v(u-1)$ 的极限**存在**（这一步必须真能算出来，否则公式不能用），则
 
 $$
 \lim u^{v}=\exp\!\left(\lim v\,(u-1)\right)

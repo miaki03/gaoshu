@@ -52,7 +52,9 @@ $$\lim\frac{\beta}{\alpha}=c .$$
 
 $$\lim\frac{\alpha}{\beta}=\lim\frac{\alpha'}{\beta'} .$$
 
-**限制**：这条定理说的是"整个式子是乘除结构时"。如果 $\alpha$ 出现在**加减号的一边**，替换会改变答案。
+**限制**：这条定理说的是"整个式子是乘除结构时"。如果 $\alpha$ 出现在**加减号的一边**，替换**一般**不能做——两边的项可能同阶抵消，一替就把答案改掉。
+
+但要注意"加减号"不是禁用条件，**"同阶抵消"才是**。反例说明区别：$\lim\limits_{x\to0}\dfrac{x+\sin x}{x}=2$，这里把 $\sin x$ 换成 $x$ 结果仍对（没有抵消）；而 $\lim\limits_{x\to0}\dfrac{\tan x-\sin x}{x^3}$ 一替就错（$\tan x-\sin x\sim\frac{x^3}2$，一阶项抵消了）。
 
 $$\lim_{x\to0}\frac{\tan x-\sin x}{x^3}\ \overset{\text{错}}{\longrightarrow}\ \lim_{x\to0}\frac{x-x}{x^3}=0\quad(\text{错})$$
 
@@ -157,8 +159,8 @@ $$\lim_{x\to0}\frac{\tan x-\sin x}{x^3}=\frac12 .$$
 :::
 :::
 
-:::problem id=1.5-03 level=中 source="2023–2024 期中 · 填空 4 同类"
-当 $x\to0$ 时，$x-\sin x$ 是 $x^{2}$ 的几阶无穷小？
+:::problem id=1.5-03 level=中 source="本站自编"
+当 $x\to0$ 时，$x-\sin x$ 是 $x$ 的几阶无穷小？
 
 :::ans
 算比值：

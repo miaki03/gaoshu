@@ -7,7 +7,7 @@ order: 6
 type: section
 stars: 3
 minutes: 18
-summary: 一个公式加一个"二阶再除一次"。解答题每年考，坑只有一个：二阶导数的分母。
+summary: 一个公式加一个"二阶再除一次"。四年里三次出现在解答题里，坑只有一个：二阶导数的分母。
 exam: [2022, 2024, 2025]
 concepts: [c-parametric, c-second-derivative]
 ---
@@ -79,7 +79,8 @@ $$y'=\frac32x^{1/2},\qquad y''=\frac32\cdot\frac12x^{-1/2}=\frac{3}{4\sqrt x} .$
 | 形式 | $x'$ | $y'$ | $\dfrac{dy}{dx}$ |
 | --- | --- | --- | --- |
 | $x=t^{2},y=t^{3}$ | $2t$ | $3t^{2}$ | $\dfrac{3t}{2}$ |
-| $x=a\cos t,y=a\sin t$（圆/椭圆） | $-a\sin t$ | $a\cos t$ | $-\cot t$ |
+| $x=a\cos t,y=a\sin t$（圆） | $-a\sin t$ | $a\cos t$ | $-\cot t$ |
+| $x=a\cos t,y=b\sin t$（椭圆） | $-a\sin t$ | $b\cos t$ | $-\dfrac{b}{a}\cot t$ |
 | $x=t-\sin t,y=1-\cos t$（摆线） | $1-\cos t$ | $\sin t$ | $\dfrac{\sin t}{1-\cos t}$ |
 
 ### 二阶的分母到底是什么

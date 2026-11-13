@@ -90,7 +90,7 @@ $$f(f(x))=\frac{f(x)}{1-f(x)}=\frac{\frac{x}{1-x}}{1-\frac{x}{1-x}}.$$
 | 偶函数 | $f(-x)=f(x)$ | 代入 $-x$ 看是否等于原式 |
 | 奇函数 | $f(-x)=-f(x)$ | 代入 $-x$ 看是否等于负的原式 |
 | 有界 | 存在 $M$，使 $\lvert f(x)\rvert\le M$ | 先算极限/找出可疑点（分母零点、趋于 $\infty$ 处）：若某处函数值无限增大则无界；若可疑点都有限且区间闭，则有界 |
-| 周期 | 存在 $T\neq0$，$f(x+T)=f(x)$ | 三角函数看 $\dfrac{2\pi}{\omega}$ |
+| 周期 | 存在 $T\neq0$，$f(x+T)=f(x)$ | $\sin(\omega x)$、$\cos(\omega x)$ 的周期是 $\dfrac{2\pi}{\lvert\omega\rvert}$（**带绝对值**，$\omega<0$ 也一样） |
 
 ## 速查
 
