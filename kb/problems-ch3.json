@@ -38,5 +38,45 @@
     "verify": "(lambda f: f(0) + d1(f, 0.5) * (1 - 0))(lambda x: -1.0)",
     "verifyKind": "manual",
     "note": "常值判据：f′≡0 ⇒ f 为常数；由 f(0)=−1 得 f≡−1，故 f(1)=−1。用 f(0)+f′(ξ)(1−0) 表达同一件事（f′≡0 时第二项为 0）"
+  },
+  {
+    "id": "3.2-01",
+    "page": "3-2-lhopital",
+    "level": "中",
+    "answer": "1/2",
+    "expect": 0.5,
+    "verify": "lim(lambda x: (exp(x) - 1 - x) / (x*x), 0)",
+    "verifyKind": "numeric",
+    "note": "两次洛必达：e^x−1−x → e^x−1 → e^x，最终 e^0/2 = 1/2"
+  },
+  {
+    "id": "3.2-02",
+    "page": "3-2-lhopital",
+    "level": "中",
+    "answer": "0",
+    "expect": 0,
+    "verify": "lim(lambda t: -(t) * exp(-t), 'inf')",
+    "verifyKind": "numeric",
+    "note": "0·∞ 型，改写成 ln x/(1/x) 后洛必达得 −x → 0。数值复核用 t 代换：令 x=e^{−t}，则 x ln x = −t e^{−t} → 0"
+  },
+  {
+    "id": "3.2-03",
+    "page": "3-2-lhopital",
+    "level": "难",
+    "answer": "1（且不能用洛必达）",
+    "expect": 1,
+    "verify": "lim(lambda x: (x + sin(x)) / x, 'inf')",
+    "verifyKind": "numeric",
+    "note": "拆成 1 + sin x/x，后半由 |sin x/x| ≤ 1/|x| → 0；洛必达的比值 1+cos x 振荡，条件 3 不满足"
+  },
+  {
+    "id": "3.2-04",
+    "page": "3-2-lhopital",
+    "level": "易",
+    "answer": "0",
+    "expect": 0,
+    "verify": "lim(lambda x: log(x) / x, 'inf')",
+    "verifyKind": "numeric",
+    "note": "∞/∞ 型，一次洛必达得 1/x → 0"
   }
 ]

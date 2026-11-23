@@ -234,6 +234,18 @@
       "zh": "常值判据与单调判据",
       "en": "corollaries of MVT",
       "first": "3-1-mvt"
+    },
+    {
+      "id": "c-lhopital",
+      "zh": "洛必达法则",
+      "en": "L'Hôpital's rule",
+      "first": "3-2-lhopital"
+    },
+    {
+      "id": "c-indeterminate",
+      "zh": "未定式",
+      "en": "indeterminate form",
+      "first": "3-2-lhopital"
     }
   ]
 }
