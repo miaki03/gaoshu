@@ -191,9 +191,9 @@ def main(argv):
         'asin': math.asin, 'acos': math.acos, 'atan': math.atan,
         'exp': math.exp, 'log': math.log, 'ln': math.log,
         'sqrt': math.sqrt, 'abs': abs, 'pow': pow,
-        'pi': PI, 'e': E, 'inf': INF,
+        'pi': PI, 'e': E, 'E': E, 'inf': INF,
         'lim': lim, 'deriv': deriv, 'd1': d1, 'd2': d2, 'integ': integ, 'F': F, 'solve': solve,
-        'float': float, 'int': int, 'round': round, 'max': max, 'min': min,
+        'float': float, 'int': int, 'round': round, 'max': max, 'min': min, 'bool': bool,
         '__builtins__': {},
     }
 

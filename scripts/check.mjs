@@ -147,7 +147,8 @@ for (const p of sections) {
     refCount += 1;
     if (!pids.has(m[1])) errs.push(`${p.file}: 正文题号 ${m[1]} 不在题库里`);
   }
-  if (p.part === 'p1' || p.part === 'p2') {
+  const isTeaching = p.part === 'p1' || p.part === 'p2' || (p.part === 'p3' && p.chapter !== 'c6');
+  if (isTeaching) {
     const mine = problems.filter((pr) => pr.page === p.slug);
     if (!mine.length) errs.push(`${p.file}: 教学章节没有任何入库题目`);
   }

@@ -55,19 +55,27 @@
 
   /* ── 倒计时 ── */
   var cd = document.getElementById('countdown');
+  var EXAM_LABEL = document.body.getAttribute('data-exam-label') || '考试';
+  var EXAM_NOTE = document.body.getAttribute('data-exam-note') || '';
   function paintCountdown() {
-    if (!cd || !EXAM) return;
-    var exam = new Date(EXAM + 'T09:00:00');
-    var days = Math.ceil((exam - new Date()) / 86400000);
+    if (!cd) return;
     var done = Object.keys(progress).filter(function (k) { return progress[k] >= 2; }).length;
     var total = document.querySelectorAll('.nav-item').length;
+    var stat = '已掌握 ' + done + ' / ' + total + ' 节';
+    if (!EXAM) {
+      // 日期未定：不编一个日子，只显示进度与说明
+      cd.innerHTML = '<strong>' + EXAM_LABEL + '复习中</strong>' +
+        '<span class="cd-sub">' + stat + (EXAM_NOTE ? ' · ' + EXAM_NOTE : '') + '</span>';
+      return;
+    }
+    var days = Math.ceil((new Date(EXAM + 'T09:00:00') - new Date()) / 86400000);
     if (days > 0) {
-      cd.innerHTML = '<strong>距期中约 ' + days + ' 天</strong>' +
-        '<span class="cd-sub">已掌握 ' + done + ' / ' + total + ' 节 · 按校历第 12 周周四推算</span>';
+      cd.innerHTML = '<strong>距' + EXAM_LABEL + '约 ' + days + ' 天</strong>' +
+        '<span class="cd-sub">' + stat + (EXAM_NOTE ? ' · ' + EXAM_NOTE : '') + '</span>';
     } else if (days > -3) {
-      cd.innerHTML = '<strong>考试周到了</strong><span class="cd-sub">只看错题本和公式卡，别再开新内容</span>';
+      cd.innerHTML = '<strong>' + EXAM_LABEL + '周到了</strong><span class="cd-sub">只看错题本和公式卡，别再开新内容</span>';
     } else {
-      cd.innerHTML = '<strong>期中已结束</strong><span class="cd-sub">转向期末续学：第三章起</span>';
+      cd.innerHTML = '<strong>' + EXAM_LABEL + '已结束</strong><span class="cd-sub">' + stat + '</span>';
     }
   }
   paintCountdown();

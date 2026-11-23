@@ -309,7 +309,7 @@ function shell({ title, body, activeSlug = '', toc = [], className = '', desc = 
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>∫</text></svg>">
 <script>try{var t=localStorage.getItem('gs.theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
 </head>
-<body data-exam="${escapeHtml(site.examDate || '')}" data-base="${BASE}">
+<body data-exam="${escapeHtml(site.examDate || '')}" data-exam-label="${escapeHtml(site.examLabel || '考试')}" data-exam-note="${escapeHtml(site.examNote || '')}" data-base="${BASE}">
 <a class="skip" href="#main">跳到正文</a>
 <header class="topbar">
   <button class="icon-btn only-mobile" id="menuBtn" aria-label="菜单">☰</button>
