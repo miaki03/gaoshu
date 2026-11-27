@@ -78,5 +78,35 @@
     "verify": "d1(lambda x: sqrt(1-x*x), 0.5)",
     "verifyKind": "numeric",
     "note": "在 x=0.5 处为 -0.5/√0.75 = -1/√3"
+  },
+  {
+    "id": "3.1-e1",
+    "page": "3-1-mvt",
+    "claim": "5a 例：arctan x + arctan(1/x) = π/2 (x>0)",
+    "answer": "π/2",
+    "expect": 1.5707963267948966,
+    "verify": "(lambda x: atan(x) + atan(1/x))(2.5)",
+    "verifyKind": "numeric",
+    "note": "在 x=2.5 处取和应为 π/2；一般地可由导数为 0 且 x=1 时为 π/2 得到"
+  },
+  {
+    "id": "3.1-e2",
+    "page": "3-1-mvt",
+    "claim": "5b 例：x>0 时 e^x > 1+x",
+    "answer": "成立",
+    "expect": 1,
+    "verify": "float(min(exp(x) - (1 + x) for x in [0.1, 0.5, 1, 2, 5]) > 0)",
+    "verifyKind": "proxy",
+    "note": "在网格上检验 e^x−(1+x)>0；证明由拉格朗日 + e^ξ>1 给出"
+  },
+  {
+    "id": "3.1-e3",
+    "page": "3-1-mvt",
+    "claim": "5c 例：F(x)=e^x f(x) 的导数是 e^x[f+f′]",
+    "answer": "e^x(f+f′)",
+    "expect": 0,
+    "verify": "(lambda f: d1(lambda x: exp(x)*f(x), 0.7) - exp(0.7)*(f(0.7) + d1(f, 0.7)))(lambda x: sin(x))",
+    "verifyKind": "numeric",
+    "note": "取 f=sin x、x=0.7 验证乘积法则；两边相减应为 0"
   }
 ]
