@@ -1,45 +1,5 @@
 [
   {
-    "id": "3.2-01",
-    "page": "3-2-lhopital",
-    "level": "中",
-    "answer": "1/2",
-    "expect": 0.5,
-    "verify": "lim(lambda x: (exp(x) - 1 - x) / (x*x), 0)",
-    "verifyKind": "numeric",
-    "note": "两次洛必达：e^x−1−x → e^x−1 → e^x，最终 e^0/2 = 1/2"
-  },
-  {
-    "id": "3.2-02",
-    "page": "3-2-lhopital",
-    "level": "中",
-    "answer": "0",
-    "expect": 0,
-    "verify": "lim(lambda t: -(t) * exp(-t), 'inf')",
-    "verifyKind": "numeric",
-    "note": "0·∞ 型，改写成 ln x/(1/x) 后洛必达得 −x → 0。数值复核用 t 代换：令 x=e^{−t}，则 x ln x = −t e^{−t} → 0"
-  },
-  {
-    "id": "3.2-03",
-    "page": "3-2-lhopital",
-    "level": "难",
-    "answer": "1（且不能用洛必达）",
-    "expect": 1,
-    "verify": "lim(lambda x: (x + sin(x)) / x, 'inf')",
-    "verifyKind": "numeric",
-    "note": "拆成 1 + sin x/x，后半由 |sin x/x| ≤ 1/|x| → 0；洛必达的比值 1+cos x 振荡，条件 3 不满足"
-  },
-  {
-    "id": "3.2-04",
-    "page": "3-2-lhopital",
-    "level": "易",
-    "answer": "0",
-    "expect": 0,
-    "verify": "lim(lambda x: log(x) / x, 'inf')",
-    "verifyKind": "numeric",
-    "note": "∞/∞ 型，一次洛必达得 1/x → 0"
-  },
-  {
     "id": "3.1-01",
     "page": "3-1-mvt",
     "level": "易",
@@ -118,5 +78,45 @@
     "verify": "float(abs(((lambda x: 1 + x + x*x/2 + x**3/6)(1e-4)) - ((lambda x: 1 + x + x*x/2)(1e-4))) < 1e-11)",
     "verifyKind": "proxy",
     "note": "两展开前两阶相同，差只剩 x³ 及更高：在 x=1e-4 处差约 1.7e-13，远小于 x²=1e-8，说明是高阶无穷小"
+  },
+  {
+    "id": "3.2-01",
+    "page": "3-2-lhopital",
+    "level": "中",
+    "answer": "B（不是 0/0 型）",
+    "expect": 0.5,
+    "verify": "lim(lambda x: (x + 1) / (x + 2), 0)",
+    "verifyKind": "proxy",
+    "note": "代值即得 1/2，不是未定式，所以不能用洛必达；数值复算确认真值为 1/2 而非洛必达算出的 1"
+  },
+  {
+    "id": "3.2-02",
+    "page": "3-2-lhopital",
+    "level": "难",
+    "answer": "C",
+    "expect": 0.5,
+    "verify": "lim(lambda x: (exp(x) - 1 - x) / (x*x), 0)",
+    "verifyKind": "proxy",
+    "note": "(A) 导数比值振荡、(B) 循环论证、(D) 导数比值振荡；只有 (C) 每次求导后重新判型，合法"
+  },
+  {
+    "id": "3.2-03",
+    "page": "3-2-lhopital",
+    "level": "中",
+    "answer": "0",
+    "expect": 0,
+    "verify": "lim(lambda t: -(t) * exp(-t), \"inf\")",
+    "verifyKind": "numeric",
+    "note": "0·∞ 型，改写成 ln x/(1/x) 后洛必达得 −x → 0；数值复核用 x=e^{−t} 代换（直接外推收敛太慢）"
+  },
+  {
+    "id": "3.2-04",
+    "page": "3-2-lhopital",
+    "level": "难",
+    "answer": "1（不能用洛必达）",
+    "expect": 1,
+    "verify": "lim(lambda x: (x + sin(x)) / x, \"inf\")",
+    "verifyKind": "numeric",
+    "note": "拆成 1 + sin x/x；洛必达的比值 1+cos x 振荡，条件 3 不满足"
   }
 ]

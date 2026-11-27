@@ -1,158 +1,129 @@
 ---
-title: 3.2 洛必达法则
+title: 3.2 洛必达：先学会判断"能不能用"
 slug: 3-2-lhopital
 part: p3
 chapter: c3
 order: 2
 type: section
 stars: 3
-minutes: 22
-summary: 只对 0/0 与 ∞/∞ 有效；其他五种未定式先变形。附一个"用洛必达会算错"的反例——那是它失效的判据。
+minutes: 25
+summary: 检测题 3-2 的选择题专考"这个解法错在哪"。先把三种错法认清，再做十二道计算。
 concepts: [c-lhopital, c-indeterminate]
 ---
 
-## 锚点结果
+## 这节怎么用
 
-三个极限，第一个需要连用两次：
+检测题 3-2 的结构：
 
-1. $\lim\limits_{x\to0}\dfrac{e^{x}-1-x}{x^{2}}=\dfrac12$
-2. $\lim\limits_{x\to0^{+}}x\ln x=0$
-3. $\lim\limits_{x\to\infty}\dfrac{\ln x}{x}=0$
+| 题号 | 题型 | 数量 | 考什么 |
+| --- | --- | --- | --- |
+| 一 | 填空 | 4 | 直接算极限 |
+| 二 | 选择 | 2 | **这个解法错在哪** / 哪个过程正确 |
+| 三 | 计算 | 12 | 用洛必达算极限 |
+| 四 | 证明 | 1 | 证不等式 |
 
-而下面这个**不能用洛必达**，尽管它也是"分母趋于无穷"：
+十二道计算题看着吓人，其实只有三种套路。先学会判断能不能用——选择题就在考这个。
 
-$$\lim_{x\to\infty}\frac{x+\sin x}{x}=1$$
+## 一、选择题：三种错法
 
-为什么？见机制最后一段——这是本节唯一的坑。
+:::problem id=3.2-01 level=中 source="本校检测题 3-2 二、1 同类"
+有人这样算：$\lim\limits_{x\to0}\dfrac{x+1}{x+2}\overset{\text{洛}}{=}\lim\limits_{x\to0}\dfrac{1}{1}=1$。这个计算（ ）
 
-## 机制
-
-### 法则本身：只对两种未定式
-
-若
-
-1. $\lim\dfrac{f(x)}{g(x)}$ 是 $\dfrac00$ 型或 $\dfrac{\infty}{\infty}$ 型；
-2. 在 $x_0$ 的某去心邻域内 $f,g$ 可导，且 $g'(x)\neq0$；
-3. $\lim\dfrac{f'(x)}{g'(x)}$ 存在（或为 $\pm\infty$）；
-
-则
-
-$$\lim\frac{f(x)}{g(x)}=\lim\frac{f'(x)}{g'(x)} .$$
-
-**用法**：逐次求导，每次都要重新检查是不是仍是 $\dfrac00$ 或 $\dfrac{\infty}{\infty}$；一旦不是，立刻停止并直接代值。
-
-### 五种"看起来不能直接用"的未定式，先化成两种
-
-| 原式 | 类型 | 化法 |
-| --- | --- | --- |
-| $f\cdot g$ | $0\cdot\infty$ | 写成 $\dfrac{f}{1/g}$ 或 $\dfrac{g}{1/f}$，变成 $\dfrac00$ 或 $\dfrac\infty\infty$ |
-| $f-g$ | $\infty-\infty$ | 通分，或提出公因式 |
-| $f^{g}$ | $1^{\infty}$、$0^{0}$、$\infty^{0}$ | 取对数：$g\ln f$，先算这个极限（通常是 $0\cdot\infty$） |
-
-例（第二个锚点）：$x\to0^{+}$ 时 $x\ln x$ 是 $0\cdot\infty$。改写成
-
-$$x\ln x=\frac{\ln x}{1/x}\quad\left(\frac{\infty}{\infty}\text{ 型}\right),$$
-
-用洛必达：
-
-$$\lim_{x\to0^{+}}\frac{\ln x}{1/x}=\lim_{x\to0^{+}}\frac{1/x}{-1/x^{2}}=\lim_{x\to0^{+}}(-x)=0 .$$
-
-:::trap
-改写成 $\dfrac{\ln x}{1/x}$ 还是 $\dfrac{x}{1/\ln x}$，结果一样但计算量差别很大。**规则：把"求导后变简单"的那个留在分子。**$\ln x$ 求导变 $1/x$（简单），$1/\ln x$ 求导会更复杂。选错了会越算越乱。
-:::
-
-### 什么时候洛必达会失效（本节重点）
-
-条件 3 是"$\lim\dfrac{f'}{g'}$ 存在"。**它不存在时，法则不成立，但原极限可能存在。**
-
-$$\lim_{x\to\infty}\frac{x+\sin x}{x}=1+\lim_{x\to\infty}\frac{\sin x}{x}=1+0=1 .$$
-
-若硬用洛必达：
-
-$$\frac{(x+\sin x)'}{(x)'}=\frac{1+\cos x}{1},$$
-
-这个式子当 $x\to\infty$ 时在 $0$ 与 $2$ 之间振荡，**极限不存在**。所以洛必达在这里不适用——不是"算错了"，是"前提没满足"。
-
-:::key
-**判断洛必达能不能用的顺序**：① 是 $\frac00$ 或 $\frac\infty\infty$ 吗？② 求导后那个比值有极限吗？两个都"是"才能用。第 ② 步很多人跳过，于是把"振荡"误当成"无穷"，写出错误的答案。
-:::
-
-### 和等价无穷小比：选哪个
-
-| 情形 | 用哪个 | 理由 |
-| --- | --- | --- |
-| 乘除结构、能直接替换（如 $\frac{\sin 3x}{x}$） | 等价无穷小 | 一行出结果 |
-| 需要二阶以上信息（如 $\frac{e^x-1-x}{x^2}$） | 洛必达 | 等价替换要背三阶表，洛必达两次就够 |
-| $0\cdot\infty$、$\infty-\infty$ | 先变形，两者都行 | 变形后往往是 $\frac00$ |
-| 含 $\ln x$ 与幂函数混合（如 $\frac{\ln x}{x}$） | 洛必达 | 求导能把 $\ln$ 消掉 |
-
-## 速查
-
-### 常见极限要几次洛必达
-
-| 极限 | 值 | 次数 |
-| --- | --- | --- |
-| $\lim\limits_{x\to0}\dfrac{\sin x}{x}$ | $1$ | 1 次 |
-| $\lim\limits_{x\to0}\dfrac{e^{x}-1}{x}$ | $1$ | 1 次 |
-| $\lim\limits_{x\to0}\dfrac{1-\cos x}{x^{2}}$ | $\dfrac12$ | 1 次 |
-| $\lim\limits_{x\to0}\dfrac{e^{x}-1-x}{x^{2}}$ | $\dfrac12$ | 2 次 |
-| $\lim\limits_{x\to0}\dfrac{x-\sin x}{x^{3}}$ | $\dfrac16$ | 3 次 |
-| $\lim\limits_{x\to\infty}\dfrac{\ln x}{x^{a}}\ (a>0)$ | $0$ | 1 次 |
-| $\lim\limits_{x\to\infty}\dfrac{x^{n}}{e^{x}}$ | $0$ | $n$ 次 |
-
-### 五种未定式的标准变形
-
-| 型 | 变形 | 备注 |
-| --- | --- | --- |
-| $0\cdot\infty$ | $\dfrac{f}{1/g}$ | 谁"求导后简单"谁留分子 |
-| $\infty-\infty$ | 通分 | 有根号先有理化 |
-| $1^{\infty}$ | $e^{\lim g(f-1)}$ | 也可取对数后洛必达 |
-| $0^{0}$ | $e^{\lim g\ln f}$ | $\ln f\to-\infty$，用 $0\cdot\infty$ 化法 |
-| $\infty^{0}$ | $e^{\lim g\ln f}$ | $\ln f\to\infty$，同上 |
-
-## 题
-
-:::problem id=3.2-01 level=中 source="本站自编"
-求 $\lim\limits_{x\to0}\dfrac{e^{x}-1-x}{x^{2}}$。
+(A) 正确
+(B) 错误，因为 $\dfrac{x+1}{x+2}$ 不是 $\dfrac00$ 型未定式
+(C) 错误，因为 $\lim\dfrac{(x+1)'}{(x+2)'}$ 不存在
+(D) 错误，因为 $\dfrac{x+1}{x+2}$ 是 $\dfrac{\infty}{\infty}$ 型未定式
 
 :::ans
-代值：分子 $1-1-0=0$，分母 $0$，是 $\dfrac00$ 型，可用洛必达。
+**选 B。**
 
-**第一次**：
+代值就知道：$x=0$ 时分子是 $1$、分母是 $2$，极限直接是 $\dfrac12$。**它压根不是未定式，不该用洛必达。**
 
-$$\lim_{x\to0}\frac{e^{x}-1-x}{x^{2}}\overset{\text{洛}}{=}\lim_{x\to0}\frac{e^{x}-1}{2x}.$$
+洛必达只对 $\dfrac00$ 和 $\dfrac{\infty}{\infty}$ 两种型有效。第一步永远是——**先代值，看是不是未定式**。
 
-仍是 $\dfrac00$（分子 $\to0$，分母 $\to0$），再洛一次：
-
-$$\overset{\text{洛}}{=}\lim_{x\to0}\frac{e^{x}}{2}=\frac12 .$$
-
-现在分母是常数 $2$，不再是未定式，**停止**。
-
-:::practice
-每次用完洛必达都要判一次型：**不是 $\frac00$ 或 $\frac\infty\infty$ 就立刻代值**。这题第二次之后分子是 $e^x\to1$、分母是 $2$，已经不是未定式了，再求导就错。
+:::key
+这类题不考计算，考"该不该用"。判断两步：① 代值，是 $\dfrac00$ 或 $\dfrac{\infty}{\infty}$ 吗？不是就别用。② 用了之后，$\lim\dfrac{f'}{g'}$ 存在吗？不存在也不能用。
 :::
 :::
 :::
 
-:::problem id=3.2-02 level=中 source="本站自编"
+:::problem id=3.2-02 level=难 source="本校检测题 3-2 二、2 同类"
+下列哪一步**正确**使用了洛必达法则？
+
+(A) $\lim\limits_{x\to\infty}\dfrac{x+\sin x}{x}\overset{\text{洛}}{=}\lim\limits_{x\to\infty}\dfrac{1+\cos x}{1}$
+(B) $\lim\limits_{x\to0}\dfrac{\sin x}{x}\overset{\text{洛}}{=}\lim\limits_{x\to0}\dfrac{\cos x}{1}=1$
+(C) $\lim\limits_{x\to0}\dfrac{e^{x}-1-x}{x^{2}}\overset{\text{洛}}{=}\lim\limits_{x\to0}\dfrac{e^{x}-1}{2x}\overset{\text{洛}}{=}\lim\limits_{x\to0}\dfrac{e^{x}}{2}=\dfrac12$
+(D) $\lim\limits_{x\to0}\dfrac{x^{2}\sin\frac1x}{x}\overset{\text{洛}}{=}\lim\limits_{x\to0}\dfrac{2x\sin\frac1x-\cos\frac1x}{1}$
+
+:::ans
+**选 C。**
+
+| 选项 | 病在哪 |
+| --- | --- |
+| (A) | 是 $\dfrac{\infty}{\infty}$，但求导后的比值 $1+\cos x$ **在 $x\to\infty$ 时振荡、没有极限**，条件 3 不满足。原极限其实是 $1$（拆成 $1+\frac{\sin x}{x}$） |
+| (B) | 形式上能用，但 $(\sin x)'=\cos x$ 这个公式**本身就是靠 $\frac{\sin x}{x}\to1$ 推出来的**，拿它算这个极限是循环论证。这是基本极限，不能反过来用洛必达证 |
+| (C) | $\dfrac00$ 型；第一次求导后仍是 $\dfrac00$，再求一次得到 $\dfrac{e^{0}}{2}$，**不再是未定式就停手**。每一步都合法 |
+| (D) | 求导后 $\dfrac{2x\sin\frac1x-\cos\frac1x}{1}$ 在 $0$ 附近振荡，极限不存在。原极限其实是 $0$（无穷小乘有界量） |
+
+:::trap
+(C) 里最容易错的是**没停手**。第二次求导后分子 $e^{x}\to1$、分母是常数 $2$，已经不是未定式；再求导毫无意义。**每用一次洛必达，都重新判一次型。**
+:::
+:::
+:::
+
+## 二、计算：三种套路装下十二道题
+
+### 套路一：纯 $\dfrac00$ —— 一直求导，直到不是未定式
+
+$$\lim_{x\to0}\frac{e^{x}-1-x}{x^{2}}\overset{\text{洛}}{=}\lim_{x\to0}\frac{e^{x}-1}{2x}\overset{\text{洛}}{=}\lim_{x\to0}\frac{e^{x}}{2}=\frac12 .$$
+
+### 套路二：$0\cdot\infty$ 或 $\infty-\infty$ —— 先变形
+
+$x\ln x$ 在 $x\to0^{+}$ 是 $0\cdot\infty$。**把"求导后变简单"的那个留在分子**：
+
+$$x\ln x=\frac{\ln x}{1/x}\ \left(\frac{\infty}{\infty}\right)\overset{\text{洛}}{=}\frac{1/x}{-1/x^{2}}=-x\to0 .$$
+
+:::problem id=3.2-03 level=中 source="本校检测题 3-2 三、7 同类"
 求 $\lim\limits_{x\to0^{+}}x\ln x$。
 
 :::ans
-$x\to0^{+}$ 时 $x\to0$、$\ln x\to-\infty$，是 $0\cdot\infty$ 型。改写成 $\dfrac{\infty}{\infty}$：
-
-$$x\ln x=\frac{\ln x}{1/x}.$$
-
-用洛必达：
+改写：$x\ln x=\dfrac{\ln x}{1/x}$，成为 $\dfrac{\infty}{\infty}$ 型。用洛必达：
 
 $$\lim_{x\to0^{+}}\frac{\ln x}{1/x}\overset{\text{洛}}{=}\lim_{x\to0^{+}}\frac{1/x}{-1/x^{2}}=\lim_{x\to0^{+}}(-x)=0 .$$
 
-:::trap
-这题的答案 $0$ 是"负数乘正数"看不出来的——$x$ 趋于 $0$ 更快，把 $\ln x$ 的"负无穷"压住了。这类题的固定动作就是**改写成 $\frac{\infty}{\infty}$**，不要试图用"谁大谁小"直觉判断。
+**答案 $0$。**
+
+:::practice
+为什么把 $\ln x$ 留在分子？因为它求导变成 $\dfrac1x$，变简单了；而 $\dfrac1{\ln x}$ 求导会更复杂。**改写方向选错，越算越乱。**
 :::
 :::
 :::
 
-:::problem id=3.2-03 level=难 source="本站自编"
+### 套路三：幂指函数 $f^{g}$ —— 取对数
+
+$1^{\infty}$、$0^{0}$、$\infty^{0}$ 都用这一招：先算 $g\ln f$ 的极限，再取 $e$ 的幂。
+
+$$\lim u^{v}=\exp\left(\lim v\ln u\right)$$
+
+例：$\lim\limits_{x\to0}(1+2x)^{1/x}$。取对数得 $\dfrac{\ln(1+2x)}{x}$，是 $\dfrac00$ 型，
+
+$$\overset{\text{洛}}{=}\frac{\frac{2}{1+2x}}{1}\to2\ \Longrightarrow\ \text{原式}=e^{2}.$$
+
+## 三、证明题：洛必达配合单调性
+
+检测题 3-2 第四大题是"证明当 $x>a$ 时某不等式"。做法不是用洛必达硬算，而是**移项成函数，证它单调递增**（下一节 3.4 讲透）。
+
+例：证 $x>0$ 时 $x>\ln(1+x)$。
+
+设 $f(x)=x-\ln(1+x)$，则 $f(0)=0$，且
+
+$$f'(x)=1-\frac{1}{1+x}=\frac{x}{1+x}>0\quad(x>0).$$
+
+所以 $f$ 在 $[0,+\infty)$ 上递增，$x>0$ 时 $f(x)>f(0)=0$，即 $x>\ln(1+x)$。
+
+## 四、什么时候失效（本节唯一的理解点）
+
+:::problem id=3.2-04 level=难 source="本站自编"
 求 $\lim\limits_{x\to\infty}\dfrac{x+\sin x}{x}$，并说明能不能用洛必达。
 
 :::ans
@@ -160,38 +131,54 @@ $$\lim_{x\to0^{+}}\frac{\ln x}{1/x}\overset{\text{洛}}{=}\lim_{x\to0^{+}}\frac{
 
 $$\frac{x+\sin x}{x}=1+\frac{\sin x}{x}.$$
 
-而 $\left\lvert\dfrac{\sin x}{x}\right\rvert\le\dfrac1{\lvert x\rvert}\to0$，所以
+因为 $\left\lvert\dfrac{\sin x}{x}\right\rvert\le\dfrac1{\lvert x\rvert}\to0$，所以
 
 $$\lim_{x\to\infty}\frac{x+\sin x}{x}=1 .$$
 
-**能不能用洛必达**：不能，或严格说"用了也得不到答案"。形式上它确实是 $\dfrac{\infty}{\infty}$，但求导后的比值
+**能不能用洛必达：不能。** 形式上它是 $\dfrac{\infty}{\infty}$，但求导后的比值
 
 $$\frac{1+\cos x}{1}$$
 
-在 $x\to\infty$ 时不存在（在 $0$ 与 $2$ 之间振荡）。洛必达的第三个条件是"$\lim\frac{f'}{g'}$ 存在"，这里不满足，**所以法则不适用**——原极限存在并不矛盾。
+在 $x\to\infty$ 时不存在（在 $0$ 与 $2$ 之间振荡）。洛必达的第三个条件"$\lim\frac{f'}{g'}$ 存在"不满足，所以法则不适用——原极限本来就有，这不矛盾。
 
 :::trap
-这是洛必达最典型的失效案例，也是考题里区分"背公式"和"懂条件"的地方。判断标准不是"原式是不是未定式"，而是"**求导后的比值有没有极限**"。
+判断标准不是"原式是不是未定式"，而是"**求导后的比值有没有极限**"。很多题形式上是 $\frac\infty\infty$，但导完振荡，那就不能用洛必达。
 :::
 :::
 :::
 
-:::problem id=3.2-04 level=易 source="本站自编"
-求 $\lim\limits_{x\to\infty}\dfrac{\ln x}{x}$。
+## 速查
 
-:::ans
-$\dfrac{\infty}{\infty}$ 型，用洛必达：
+### 五种未定式怎么化
 
-$$\lim_{x\to\infty}\frac{\ln x}{x}\overset{\text{洛}}{=}\lim_{x\to\infty}\frac{1/x}{1}=\lim_{x\to\infty}\frac1x=0 .$$
+| 型 | 化法 | 注意 |
+| --- | --- | --- |
+| $0\cdot\infty$ | 写成 $\dfrac{f}{1/g}$ | 让"求导后简单"的那个留在分子 |
+| $\infty-\infty$ | 通分 | 有根号先有理化 |
+| $1^{\infty}$、$0^{0}$、$\infty^{0}$ | 取对数算 $g\ln f$ | 要求该邻域内 $f>0$ |
 
-**结论可以推广**：$\ln x$ 增长得比任何正幂次 $x^{a}$ 都慢，所以 $\lim\limits_{x\to\infty}\dfrac{\ln x}{x^{a}}=0$（$a>0$）。
+### 常见极限（记值即可）
 
-:::practice
-这条与 $\lim\dfrac{x^n}{e^x}=0$ 一起记：**增长速度由慢到快是 $\ln x \ll x^a \ll a^x \ll x!$**。期末里比较大小、判断收敛都要用它。
+| 极限 | 值 |
+| --- | --- |
+| $\lim\limits_{x\to0}\dfrac{\sin x}{x}$ | $1$（基本极限，不能用洛必达） |
+| $\lim\limits_{x\to0}\dfrac{e^{x}-1}{x}$ | $1$ |
+| $\lim\limits_{x\to0}\dfrac{1-\cos x}{x^{2}}$ | $\dfrac12$ |
+| $\lim\limits_{x\to0}\dfrac{e^{x}-1-x}{x^{2}}$ | $\dfrac12$ |
+| $\lim\limits_{x\to0}\dfrac{x-\sin x}{x^{3}}$ | $\dfrac16$ |
+| $\lim\limits_{x\to\infty}\dfrac{\ln x}{x^{a}}\ (a>0)$ | $0$ |
+| $\lim\limits_{x\to\infty}\dfrac{x^{n}}{e^{x}}$ | $0$ |
+
+### 增长速度（每个箭头都有条件）
+
+$$\ln x \ll x^{a}\ (a>0) \ll b^{x}\ (b>1) \ll x!$$
+
+:::trap
+底数 $b\le1$ 时不能这么写：$b=0.5$ 时 $0.5^{x}\to0$，比 $x^{0.5}$ 小得多。**"指数函数增长快"只对底数大于 $1$ 成立。**
 :::
-:::
-:::
 
-:::key
-第三章 33% 里，洛必达是**纯计算得分点**：给一个未定式，变形 → 求导 → 判型 → 得出数。唯一需要理解的是"条件 3 不满足时不能用"，而它正好对应 3.2-03 那道题。
-:::
+## 作业对应
+
+检测题 **3-2** 全做。第二题（判断解法对错）和最后几道计算题最值得花时间——前者考理解，后者考熟练。
+
+上一节：[3.1 中值定理](/s/3-1-mvt)。
