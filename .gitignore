@@ -11,3 +11,5 @@ __pycache__/
 /*.doc
 /*.docx
 /*.pdf
+# 工作区里出现的其他项目（不属于本站，避免 git add -A 误提交）
+cpp/
