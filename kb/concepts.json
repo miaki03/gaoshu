@@ -246,6 +246,18 @@
       "zh": "未定式",
       "en": "indeterminate form",
       "first": "3-2-lhopital"
+    },
+    {
+      "id": "c-taylor",
+      "zh": "泰勒公式",
+      "en": "Taylor formula",
+      "first": "3-3-taylor"
+    },
+    {
+      "id": "c-maclaurin",
+      "zh": "麦克劳林公式",
+      "en": "Maclaurin series",
+      "first": "3-3-taylor"
     }
   ]
 }

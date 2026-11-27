@@ -78,5 +78,45 @@
     "verify": "d1(lambda x: (x-1)*(x-2)*(x-3), 2 - 1/sqrt(3))",
     "verifyKind": "numeric",
     "note": "f′=3x²−12x+11，根为 2±1/√3≈1.423 与 2.577，分别落在 (1,2) 与 (2,3)"
+  },
+  {
+    "id": "3.3-01",
+    "page": "3-3-taylor",
+    "level": "易",
+    "answer": "1/6",
+    "expect": 0.16666666666666666,
+    "verify": "1/6",
+    "verifyKind": "manual",
+    "note": "e^x 展开中 x³ 的系数是 1/3! = 1/6；阶乘不能漏"
+  },
+  {
+    "id": "3.3-02",
+    "page": "3-3-taylor",
+    "level": "中",
+    "answer": "R₃(x) = −x⁴/[4(1+ξ)⁴]",
+    "expect": -0.25,
+    "verify": "(-6/24)*(1/(1+0)**4)",
+    "verifyKind": "manual",
+    "note": "ln(1+x) 四阶导 −6/(1+x)⁴，代入拉格朗日余项得 −6/4!·x⁴/(1+ξ)⁴ = −x⁴/[4(1+ξ)⁴]；ξ=0 处系数为 −1/4"
+  },
+  {
+    "id": "3.3-03",
+    "page": "3-3-taylor",
+    "level": "中",
+    "answer": "1/2",
+    "expect": 0.5,
+    "verify": "lim(lambda x: (exp(x) - 1 - x) / (x*x), 0)",
+    "verifyKind": "numeric",
+    "note": "e^x 展开到 x² 得 1+x+x²/2+o(x²)，减去 1+x 后剩 x²/2，极限 1/2（与 3.2-01 同题，两法对照）"
+  },
+  {
+    "id": "3.3-04",
+    "page": "3-3-taylor",
+    "level": "难",
+    "answer": "C（比 x² 高阶）",
+    "expect": 1,
+    "verify": "float(abs(((lambda x: 1 + x + x*x/2 + x**3/6)(1e-4)) - ((lambda x: 1 + x + x*x/2)(1e-4))) < 1e-11)",
+    "verifyKind": "proxy",
+    "note": "两展开前两阶相同，差只剩 x³ 及更高：在 x=1e-4 处差约 1.7e-13，远小于 x²=1e-8，说明是高阶无穷小"
   }
 ]
