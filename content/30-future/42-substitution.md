@@ -133,7 +133,7 @@ $$1-\sin^{2}t=\cos^{2}t,\qquad 1+\tan^{2}t=\sec^{2}t,\qquad \sec^{2}t-1=\tan^{2}
 计算 $\displaystyle\int\frac{x^{2}}{\sqrt{1-x^{2}}}\,dx$。
 
 :::ans
-**第一步：代换。** 出现 $\sqrt{1-x^{2}}$，取 $x=\sin t$，则 $dx=\cos t\,dt$，且 $\sqrt{1-x^{2}}=\cos t$。
+**第一步：代换。** 出现 $\sqrt{1-x^{2}}$，取 $x=\sin t$，$t\in\left[-\dfrac\pi2,\dfrac\pi2\right]$（写出来，它保证 $\cos t\ge0$），则 $dx=\cos t\,dt$，且 $\sqrt{1-x^{2}}=\cos t$。
 
 **第二步：换进去并化简。**
 $$\int\frac{x^{2}}{\sqrt{1-x^{2}}}dx=\int\frac{\sin^{2}t}{\cos t}\cdot\cos t\,dt=\int\sin^{2}t\,dt .$$
@@ -160,7 +160,7 @@ $$\frac{1}{2\sqrt{1-x^{2}}}-\frac12\left(\sqrt{1-x^{2}}-\frac{x^{2}}{\sqrt{1-x^{
 计算 $\displaystyle\int\frac{dx}{(1+x^{2})^{3/2}}$。
 
 :::ans
-**第一步：代换。** 出现 $\sqrt{1+x^{2}}$ 的幂，取 $x=\tan t$，则 $dx=\sec^{2}t\,dt$，且 $(1+x^{2})^{3/2}=\sec^{3}t$。
+**第一步：代换。** 出现 $\sqrt{1+x^{2}}$ 的幂，取 $x=\tan t$，$t\in\left(-\dfrac\pi2,\dfrac\pi2\right)$（保证 $\sec t>0$），则 $dx=\sec^{2}t\,dt$，且 $(1+x^{2})^{3/2}=\sec^{3}t$。
 
 **第二步：换进去。**
 $$\int\frac{dx}{(1+x^{2})^{3/2}}=\int\frac{\sec^{2}t}{\sec^{3}t}dt=\int\frac{1}{\sec t}dt=\int\cos t\,dt=\sin t+C .$$
@@ -182,7 +182,7 @@ $$\int\frac{dx}{(1+x^{2})^{3/2}}=\frac{x}{\sqrt{1+x^{2}}}+C .$$
 计算 $\displaystyle\int\frac{\sqrt{x^{2}-4}}{x}\,dx$（$x>2$）。
 
 :::ans
-**第一步：代换。** 出现 $\sqrt{x^{2}-4}$，$a=2$，取 $x=2\sec t$，则 $dx=2\sec t\tan t\,dt$，且 $\sqrt{x^{2}-4}=2\tan t$。
+**第一步：代换。** 出现 $\sqrt{x^{2}-4}$，$a=2$，取 $x=2\sec t$，$t\in\left(0,\dfrac\pi2\right)$（$x>2$，保证 $\tan t>0$），则 $dx=2\sec t\tan t\,dt$，且 $\sqrt{x^{2}-4}=2\tan t$。
 
 **第二步：换进去。**
 $$\int\frac{\sqrt{x^{2}-4}}{x}dx=\int\frac{2\tan t}{2\sec t}\cdot 2\sec t\tan t\,dt=2\int\tan^{2}t\,dt .$$

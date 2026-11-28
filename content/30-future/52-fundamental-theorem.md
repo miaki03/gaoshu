@@ -206,7 +206,7 @@ $$\lim_{x\to0}\frac{\int_0^x\sin t\,dt}{x^{2}}=\lim_{x\to0}\frac{\sin x}{2x}=\fr
 | 公式 | 条件 | 用途 |
 | --- | --- | --- |
 | $\dfrac{d}{dx}\int_a^x f(t)\,dt=f(x)$ | $f$ 连续 | 变限求导，上限是 $x$ |
-| $\int_a^b f(x)\,dx=F(b)-F(a)$ | $f$ 在 $[a,b]$ 连续，$F'=f$ | 算定积分 |
+| $\int_a^b f(x)\,dx=F(b)-F(a)$ | $f$ 在 $[a,b]$ 连续；$F$ 在 $[a,b]$ 连续、在 $(a,b)$ 内 $F'=f$ | 算定积分 |
 
 ### 变限求导的三种形态
 

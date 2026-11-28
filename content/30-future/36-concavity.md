@@ -77,7 +77,7 @@ $$y'=3x^{2}-6x,\qquad y''=6x-6=6(x-1).$$
 
 ## 二、渐近线：三种，各一个极限
 
-::::trap
+:::trap
 作业填空里一条曲线可能同时要求好几种，所以先把三个公式列清：
 
 | 类型 | 判据 | 求法 |
@@ -85,7 +85,7 @@ $$y'=3x^{2}-6x,\qquad y''=6x-6=6(x-1).$$
 | 铅直 | 单侧极限 $\lim\limits_{x\to a^{\pm}}f(x)=\pm\infty$ | 找函数"爆掉"的点（分母零点、$\ln$ 的端点），左右两侧算一个就够 |
 | 水平 | $\lim\limits_{x\to\infty}f(x)=b$ | 算 $x\to\pm\infty$ 的极限 |
 | 斜 | $\lim\limits_{x\to\infty}\dfrac{f(x)}{x}=a\neq0$ 且 $\lim\limits_{x\to\infty}[f(x)-ax]=b$ | 先算 $a$，再算 $b$ |
-::::
+:::
 
 :::problem id=3.5-03 level=中 source="本校检测题 3-5 一、4 同类"
 求曲线 $y=\dfrac{x}{x-1}$ 的所有渐近线。
