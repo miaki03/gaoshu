@@ -193,6 +193,16 @@
     "note": "交点 x²=4 ⇒ x=±2；抛物线在 [−2,2] 内位于 y=4 下方：∫−2^2(4−x²)dx = 16−16/3 = 32/3"
   },
   {
+    "id": "5.4-06",
+    "page": "5-4-applications",
+    "level": "难",
+    "answer": "9",
+    "expect": 9,
+    "verify": "solve(lambda a: 4*a**1.5/3 - 36, 1, 20)",
+    "verifyKind": "numeric",
+    "note": "y=x² 与 y=a 交于 x=±√a，面积 = ∫(a−x²)dx = (4/3)a^(3/2)。令其等于 36 ⇒ a^(3/2)=27 ⇒ a=9。用二分法反解参数 a 复算；再以 a=9 复算面积得 36"
+  },
+  {
     "id": "5.4-04",
     "page": "5-4-applications",
     "level": "易",
