@@ -566,7 +566,11 @@ for (const part of nav) {
         '> 拿去和 AI 讨论时，建议先说清"这是我的作业，请指出我思路里的错误，不要直接给答案"。',
         '',
       ];
-      write(path.join('c', ch.id, 'problems.md'), head.concat(mdLines).join('\n'));
+      const md = head.concat(mdLines).join('\n');
+      // 守卫：题单里绝不能出现答案块或答案标记
+      if (/:::ans/.test(md)) throw new Error(`题单导出失败：${ch.id} 的 problems.md 混入了答案`);
+      if (/<!--\s*ex:/.test(md)) throw new Error(`题单导出失败：${ch.id} 的 problems.md 混入了例题标记`);
+      write(path.join('c', ch.id, 'problems.md'), md);
     }
     const exportBar = nProblems
       ? `<section class="ch-block export-bar"><h2>导出题单</h2>
