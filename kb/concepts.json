@@ -282,6 +282,54 @@
       "zh": "渐近线",
       "en": "asymptote",
       "first": "3-5-concavity"
+    },
+    {
+      "id": "c-antiderivative",
+      "zh": "原函数与不定积分",
+      "en": "antiderivative",
+      "first": "4-1-antiderivative"
+    },
+    {
+      "id": "c-substitution",
+      "zh": "换元积分法",
+      "en": "integration by substitution",
+      "first": "4-2-substitution"
+    },
+    {
+      "id": "c-parts",
+      "zh": "分部积分法",
+      "en": "integration by parts",
+      "first": "4-3-parts"
+    },
+    {
+      "id": "c-definite-integral",
+      "zh": "定积分",
+      "en": "definite integral",
+      "first": "5-1-concept"
+    },
+    {
+      "id": "c-ftc",
+      "zh": "微积分基本定理与变限积分",
+      "en": "fundamental theorem of calculus",
+      "first": "5-2-ftc"
+    },
+    {
+      "id": "c-definite-subst",
+      "zh": "定积分的换元与分部",
+      "en": "substitution in definite integrals",
+      "first": "5-3-substitution"
+    },
+    {
+      "id": "c-area-volume",
+      "zh": "定积分的应用（面积与体积）",
+      "en": "area and volume by integration",
+      "first": "5-4-applications"
+    },
+    {
+      "id": "c-improper",
+      "zh": "广义积分",
+      "en": "improper integral",
+      "first": "5-5-improper"
     }
   ]
 }

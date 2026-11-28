@@ -1,0 +1,184 @@
+[
+  {
+    "id": "4.1-01",
+    "page": "4-1-antiderivative",
+    "level": "易",
+    "answer": "f(x)=cos x, f'(x)=-sin x, ∫f'dx=cos x+C",
+    "expect": 0,
+    "verify": "max(abs(d1(sin, 0.9) - cos(0.9)), abs(d1(cos, 1.4) + sin(1.4)))",
+    "verifyKind": "numeric",
+    "note": "原函数是 sin x ⇒ f=(sin x)'=cos x；两项都验：(sin)'=cos、(cos)'=-sin，相减应为 0"
+  },
+  {
+    "id": "4.1-02",
+    "page": "4-1-antiderivative",
+    "level": "易",
+    "answer": "x^6/6 - 1/x + (2/3)x^(3/2) + C",
+    "expect": 0,
+    "verify": "d1(lambda x: x**6/6 - 1/x + (2/3)*x**1.5, 1.7) - (1.7**5 + 1/1.7**2 + sqrt(1.7))",
+    "verifyKind": "numeric",
+    "note": "答案求导应等于被积函数 x^5 + 1/x^2 + sqrt(x)"
+  },
+  {
+    "id": "4.1-03",
+    "page": "4-1-antiderivative",
+    "level": "中",
+    "answer": "f(x)=1/x, ∫f(x)dx=ln x+C",
+    "expect": 0,
+    "verify": "d1(log, 1.7) - 1/1.7",
+    "verifyKind": "numeric",
+    "note": "原函数 ln x 求导得 f=1/x；∫f 直接由定义写成 ln x+C"
+  },
+  {
+    "id": "4.1-04",
+    "page": "4-1-antiderivative",
+    "level": "中",
+    "answer": "2^x/ln2 + arctan x - cos x + C",
+    "expect": 0,
+    "verify": "d1(lambda x: 2**x/log(2) + atan(x) - cos(x), 0.8) - (2**0.8 + 1/(1 + 0.8**2) + sin(0.8))",
+    "verifyKind": "numeric",
+    "note": "三项分别查表，求导应回到 2^x + 1/(1+x^2) + sin x"
+  },
+  {
+    "id": "4.1-05",
+    "page": "4-1-antiderivative",
+    "level": "中",
+    "answer": "y = x^4/4 + 1",
+    "expect": 0,
+    "verify": "max(abs(d1(lambda x: x**4/4 + 1, t) - t**3) for t in (0.5, 1.3, 2.0))",
+    "verifyKind": "numeric",
+    "note": "切线斜率 x^3 在三个点校对；过点 (0,1) 由 C=1 保证（0^4/4+1=1），属于代数一步"
+  },
+  {
+    "id": "4.1-06",
+    "page": "4-1-antiderivative",
+    "level": "易",
+    "answer": "x^2 + 1",
+    "expect": 0,
+    "verify": "d1(lambda x: x*x + 1, 1.4) - 2*1.4",
+    "verifyKind": "numeric",
+    "note": "已知 f'=2x、f(1)=2：积分得 x^2+C，代入得 C=1；求导应回到 2x"
+  },
+  {
+    "id": "4.2-01",
+    "page": "4-2-substitution",
+    "level": "易",
+    "answer": "(1/3)sin 3x + C",
+    "expect": 0,
+    "verify": "d1(lambda x: sin(3*x)/3, 0.4) - cos(1.2)",
+    "verifyKind": "numeric",
+    "note": "dx=(1/3)d(3x)，补系数 1/3；求导后应等于 cos 3x"
+  },
+  {
+    "id": "4.2-02",
+    "page": "4-2-substitution",
+    "level": "中",
+    "answer": "(1/2)e^(x^2) + C",
+    "expect": 0,
+    "verify": "d1(lambda x: exp(x*x)/2, 0.9) - 0.9*exp(0.81)",
+    "verifyKind": "numeric",
+    "note": "xdx=(1/2)d(x^2)；求导应等于 x e^(x^2)"
+  },
+  {
+    "id": "4.2-03",
+    "page": "4-2-substitution",
+    "level": "中",
+    "answer": "(1/2)(ln x)^2 + C",
+    "expect": 0,
+    "verify": "d1(lambda x: log(x)**2/2, 1.7) - log(1.7)/1.7",
+    "verifyKind": "numeric",
+    "note": "dx/x=d(ln x)；求导应等于 ln x / x"
+  },
+  {
+    "id": "4.2-04",
+    "page": "4-2-substitution",
+    "level": "难",
+    "answer": "(1/2)arcsin x - (1/2)x sqrt(1-x^2) + C",
+    "expect": 0,
+    "verify": "d1(lambda x: asin(x)/2 - x*sqrt(1 - x*x)/2, 0.5) - 0.25/sqrt(0.75)",
+    "tol": 1e-4,
+    "verifyKind": "numeric",
+    "note": "x=sin t，∫sin^2 t dt 降次后回代；x=0.5 处被积函数为 0.25/sqrt(0.75)"
+  },
+  {
+    "id": "4.2-05",
+    "page": "4-2-substitution",
+    "level": "中",
+    "answer": "x / sqrt(1+x^2) + C",
+    "expect": 0,
+    "verify": "d1(lambda x: x/sqrt(1 + x*x), 1.3) - (1 + 1.3**2)**(-1.5)",
+    "verifyKind": "numeric",
+    "note": "x=tan t，sec^2/sec^3=cos t，回代 sin t=x/sqrt(1+x^2)；求导应等于 (1+x^2)^(-3/2)"
+  },
+  {
+    "id": "4.2-06",
+    "page": "4-2-substitution",
+    "level": "难",
+    "answer": "sqrt(x^2-4) - 2 arccos(2/x) + C",
+    "expect": 0,
+    "verify": "d1(lambda x: sqrt(x*x - 4) - 2*acos(2/x), 3.0) - sqrt(5)/3",
+    "tol": 1e-4,
+    "verifyKind": "numeric",
+    "note": "x=2sec t，2∫tan^2 t dt=2(tan t - t)；x=3 处被积函数 sqrt(5)/3"
+  },
+  {
+    "id": "4.3-01",
+    "page": "4-3-parts",
+    "level": "易",
+    "answer": "(x-1)e^x + C",
+    "expect": 0,
+    "verify": "d1(lambda x: (x - 1)*exp(x), 1.2) - 1.2*exp(1.2)",
+    "verifyKind": "numeric",
+    "note": "u=x, dv=e^x dx；求导应等于 x e^x"
+  },
+  {
+    "id": "4.3-02",
+    "page": "4-3-parts",
+    "level": "易",
+    "answer": "-x cos x + sin x + C",
+    "expect": 0,
+    "verify": "d1(lambda x: -x*cos(x) + sin(x), 1.1) - 1.1*sin(1.1)",
+    "verifyKind": "numeric",
+    "note": "u=x, dv=sin x dx, v=-cos x；求导应等于 x sin x"
+  },
+  {
+    "id": "4.3-03",
+    "page": "4-3-parts",
+    "level": "中",
+    "answer": "x ln x - x + C",
+    "expect": 0,
+    "verify": "d1(lambda x: x*log(x) - x, 1.7) - log(1.7)",
+    "verifyKind": "numeric",
+    "note": "只有一个因子时 dv=dx；求导应等于 ln x"
+  },
+  {
+    "id": "4.3-04",
+    "page": "4-3-parts",
+    "level": "中",
+    "answer": "(x^2/2)ln x - x^2/4 + C",
+    "expect": 0,
+    "verify": "d1(lambda x: x*x/2*log(x) - x*x/4, 1.7) - 1.7*log(1.7)",
+    "verifyKind": "numeric",
+    "note": "u=ln x, dv=x dx；求导应等于 x ln x"
+  },
+  {
+    "id": "4.3-05",
+    "page": "4-3-parts",
+    "level": "中",
+    "answer": "((x^2+1)/2)arctan x - x/2 + C",
+    "expect": 0,
+    "verify": "d1(lambda x: (x*x + 1)/2*atan(x) - x/2, 1.1) - 1.1*atan(1.1)",
+    "verifyKind": "numeric",
+    "note": "u=arctan x, dv=x dx，剩下 ∫x^2/(1+x^2)dx 拆成 1-1/(1+x^2)；求导应等于 x arctan x"
+  },
+  {
+    "id": "4.3-06",
+    "page": "4-3-parts",
+    "level": "难",
+    "answer": "(e^x/2)(sin x - cos x) + C",
+    "expect": 0,
+    "verify": "d1(lambda x: exp(x)/2*(sin(x) - cos(x)), 0.7) - exp(0.7)*sin(0.7)",
+    "verifyKind": "numeric",
+    "note": "两次分部同向取 u=三角函数，移项得 2I=e^x(sin x-cos x)；求导应等于 e^x sin x"
+  }
+]

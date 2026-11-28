@@ -1,0 +1,229 @@
+---
+title: 5.1 定积分的概念与性质
+slug: 5-1-concept
+part: p3
+chapter: c5
+order: 1
+type: section
+stars: 3
+minutes: 25
+summary: 定积分是带符号的面积。区间可加、保号、估值、绝对值不等式怎么用，变上限积分为什么连续，五道题讲完。
+# 概念台账 kb/concepts.json 不在本次允许改动的文件里，c-definite-integral 待登记后填回这里
+concepts: [c-definite-integral]
+---
+
+## 这节怎么用
+
+检测题 5-1 一共四类题。**先做，做不动再看讲解。**
+
+| 题号 | 题型 | 考什么 |
+| --- | --- | --- |
+| 一、1–4 | 填空 | 用性质求值、区间可加、绝对值不等式 |
+| 二、1–3 | 选择 | 定积分与面积的区别、保号性、估值 |
+| 三 | 计算 | 用几何意义（半圆、三角形、梯形）求积分 |
+| 四 | 证明 | 变上限积分函数的连续性 |
+
+整节只讲一句话：**定积分是带符号的面积**。x 轴上方记正，下方记负。下面所有性质都从这句话推出来。
+
+## 一、先认清：定积分不是面积
+
+定义：把 $[a,b]$ 切成 $n$ 段，每段用矩形近似，求和，再让最大的段长 $\lambda\to0$：
+
+$$\int_a^b f(x)\,dx=\lim_{\lambda\to0}\sum_{i=1}^{n}f(\xi_i)\Delta x_i .$$
+
+这个极限存在，就称 $f$ 在 $[a,b]$ 上可积。闭区间上连续的函数一定可积；有有限个第一类间断点也可积。
+
+**带符号**是关键。$f(x)<0$ 的那一段，$\Delta x_i>0$ 而 $f(\xi_i)<0$，乘积为负，所以那块面积算负的。
+
+:::trap
+"定积分 = 面积"是错的，只在 $f(x)\ge0$ 时才对。$y=\sin x$ 在 $[0,2\pi]$ 上的定积分是 $0$，而它的面积是 $4$。考试里凡是问"面积"的，都要先看函数有没有在 x 轴下方。
+:::
+
+:::problem id=5.1-03 level=中 source="本校检测题 5-1 三 同类"
+用几何意义计算 $\displaystyle\int_{-2}^{2}\sqrt{4-x^{2}}\,dx$。
+
+:::ans
+**答案：$2\pi$。**
+
+$y=\sqrt{4-x^{2}}$ 两边平方得 $x^{2}+y^{2}=4$，且 $y\ge0$。所以它是原点为心、半径 $2$ 的**上半圆**，不是整圆。
+
+上半圆面积 $=\dfrac12\pi r^{2}=\dfrac12\pi\cdot4=2\pi$。
+
+**这一步别错**：整圆面积是 $4\pi$。根号只给出上半圆，答案是一半。
+
+:::trap
+看到 $\sqrt{r^{2}-x^{2}}$ 先想"半圆"。写成 $\pi r^{2}$ 就直接丢掉一半分。同类的还有 $y=-\sqrt{r^{2}-x^{2}}$：它在下半平面，积分是负的。
+:::
+:::
+:::
+
+## 二、性质一：线性与区间可加
+
+**线性**：$\displaystyle\int_a^b\bigl(\alpha f+\beta g\bigr)dx=\alpha\int_a^b f\,dx+\beta\int_a^b g\,dx$。常数直接提出去，和式拆开算。
+
+**区间可加**：对任意 $c$（在 $[a,b]$ 内或外都行），
+
+$$\int_a^b f\,dx=\int_a^c f\,dx+\int_c^b f\,dx .$$
+
+这一条是用来"补缺口"的：已知两段，求第三段。
+
+:::problem id=5.1-01 level=易 source="本校检测题 5-1 一、2 同类"
+设 $f$ 连续，且 $\displaystyle\int_0^1 f(x)\,dx=2$，$\displaystyle\int_0^2 f(x)\,dx=5$。求 $\displaystyle\int_1^2 f(x)\,dx$。
+
+:::ans
+**答案：$3$。**
+
+用区间可加，把 $[0,2]$ 从 $1$ 处拆开：
+
+$$\int_0^2 f\,dx=\int_0^1 f\,dx+\int_1^2 f\,dx .$$
+
+代入已知：$5=2+\displaystyle\int_1^2 f\,dx$，所以 $\displaystyle\int_1^2 f\,dx=3$。
+
+:::key
+区间可加是填空、选择里出现最多的一条。记法：**大区间 = 两块相加**。给你两块求第三块，永远是加法的移项，不用别的公式。
+:::
+:::
+:::
+
+## 三、性质二：保号性与比较
+
+**保号**：在 $[a,b]$ 上 $f(x)\ge0$，则 $\displaystyle\int_a^b f\,dx\ge0$。
+
+**比较**：在 $[a,b]$ 上 $f(x)\ge g(x)$，则 $\displaystyle\int_a^b f\,dx\ge\int_a^b g\,dx$。
+
+两个条件都要检查：**同一个区间**、**函数大小方向一致**。
+
+:::problem id=5.1-02 level=易 source="本校检测题 5-1 二、2 同类"
+不计算积分值，比较 $\displaystyle\int_0^1 x\,dx$ 与 $\displaystyle\int_0^1 x^{2}\,dx$ 的大小。
+
+:::ans
+**前者大。**
+
+在 $(0,1)$ 内 $0<x<1$，再乘一个 $x$ 会让它变小，所以 $x^{2}<x$。
+
+区间相同，都是 $[0,1]$；大小关系同向。由比较性质得
+
+$$\int_0^1 x^{2}\,dx<\int_0^1 x\,dx .$$
+
+直接算也一致：左边 $=\dfrac13$，右边 $=\dfrac12$。
+
+:::trap
+两个坑。① $x^{2}<x$ 只在 $(0,1)$ 上成立，在 $(1,+\infty)$ 上反过来，所以"$x^2$ 的积分更小"不能脱离区间说。② 不等号方向看的是**函数**大小，别和积分值的大小混起来。
+:::
+:::
+:::
+
+## 四、性质三：估值定理与绝对值不等式
+
+**估值定理**：设 $m\le f(x)\le M$（$m$、$M$ 是 $f$ 在 $[a,b]$ 上的最小值与最大值），则
+
+$$m(b-a)\le\int_a^b f(x)\,dx\le M(b-a).$$
+
+推导一行：把 $m\le f\le M$ 三边同时在 $[a,b]$ 上积分，再用比较性质，两端的 $\int m\,dx$ 就是 $m(b-a)$。
+
+**别忘乘 $(b-a)$**。区间长度不是 $1$ 时，这一步最容易漏。
+
+**绝对值不等式**：$\left\lvert\displaystyle\int_a^b f\,dx\right\rvert\le\displaystyle\int_a^b\lvert f\rvert\,dx$。
+
+推导：$-\lvert f\rvert\le f\le\lvert f\rvert$，三边积分得 $-\int\lvert f\rvert\le\int f\le\int\lvert f\rvert$，这正好是 $\lvert\int f\rvert\le\int\lvert f\rvert$。
+
+:::problem id=5.1-05 level=中 source="本校检测题 5-1 二、3 同类"
+用估值定理给出 $\displaystyle I=\int_0^1\frac{dx}{1+x^{2}}$ 的范围。
+
+:::ans
+**答案：$\dfrac12\le I\le 1$。**
+
+先找 $f(x)=\dfrac1{1+x^{2}}$ 在 $[0,1]$ 上的最小值与最大值。分母 $1+x^2$ 从 $1$ 增到 $2$，所以 $f$ 从 $1$ 减到 $\dfrac12$：
+
+$$m=\frac12,\qquad M=1.$$
+
+区间长度 $b-a=1-0=1$，于是
+
+$$\frac12\cdot1\le I\le 1\cdot1 .$$
+
+**验算**：这个积分有精确值 $\arctan1-\arctan0=\dfrac\pi4\approx0.7854$，确实落在 $\left[\dfrac12,1\right]$ 内。
+
+:::trap
+区间是 $[0,1]$ 时 $b-a=1$，很多人因此养成漏乘的习惯，换成 $\int_0^2$ 就错。**估值定理的式子永远是 $m(b-a)$ 与 $M(b-a)$**，先写区间长度再代。
+:::
+:::
+:::
+
+## 五、变上限积分函数：它为什么连续
+
+设 $f$ 在 $[a,b]$ 上连续，定义
+
+$$\Phi(x)=\int_a^x f(t)\,dt,\qquad x\in[a,b].$$
+
+$\Phi$ 叫**变上限积分函数**。它有两个结论，这一节只讲第一个：
+
+1. $\Phi$ 在 $[a,b]$ 上**连续**；
+2. $\Phi$ 在 $(a,b)$ 上**可导**，且 $\Phi'(x)=f(x)$——这是 5.2 节的主线。
+
+**连续性怎么证。** 给 $x$ 一个增量 $\Delta x$，用区间可加：
+
+$$\Phi(x+\Delta x)-\Phi(x)=\int_x^{x+\Delta x}f(t)\,dt .$$
+
+$f$ 连续，所以在 $[a,b]$ 上有界，设 $\lvert f\rvert\le M$。积分区间的长度是 $\lvert\Delta x\rvert$，被积函数的绝对值不超过 $M$，由估值定理与绝对值不等式，
+
+$$\left\lvert\Phi(x+\Delta x)-\Phi(x)\right\rvert=\left\lvert\int_x^{x+\Delta x}f(t)\,dt\right\rvert\le M\lvert\Delta x\rvert .$$
+
+令 $\Delta x\to0$，右边趋于 $0$，所以 $\Phi(x+\Delta x)\to\Phi(x)$，即 $\Phi$ 连续。
+
+**这个式子的意思**：上限只移动一点点，积分值也只变一点点，变化量被 $M\lvert\Delta x\rvert$ 压住。
+
+:::problem id=5.1-04 level=中 source="本校检测题 5-1 四 同类"
+设 $f(t)=t^{2}+1$，求 $\displaystyle\lim_{h\to0}\frac1h\int_1^{1+h}f(t)\,dt$。
+
+:::ans
+**答案：$2$。**
+
+被积函数简单，直接算最快：
+
+$$\int_1^{1+h}(t^{2}+1)\,dt=\left[\frac{t^{3}}{3}+t\right]_1^{1+h}=\frac{(1+h)^{3}-1}{3}+h .$$
+
+展开 $(1+h)^{3}=1+3h+3h^{2}+h^{3}$，得 $h+h^{2}+\dfrac{h^{3}}{3}+h=2h+h^{2}+\dfrac{h^{3}}{3}$。
+
+除以 $h$：$\dfrac1h\int_1^{1+h}f\,dt=2+h+\dfrac{h^{2}}{3}$。令 $h\to0$，得 $2$。
+
+**换个说法看得更清楚**：$\dfrac1h\int_1^{1+h}f\,dt$ 是 $f$ 在 $[1,1+h]$ 上的**平均值**。$h\to0$ 时区间缩成一点，平均值趋于该点函数值 $f(1)=2$。
+
+:::key
+$\displaystyle\lim_{h\to0}\frac1h\int_a^{a+h}f(t)\,dt=f(a)$ 只要 $f$ 在 $a$ 连续就成立。它和 5.2 的 $\Phi'(a)=f(a)$ 是同一件事的两种写法。做题时先看被积函数能不能直接积出来：能就直接算，不能再用中值定理。
+:::
+:::
+:::
+
+## 速查
+
+### 五条性质
+
+| 性质 | 式子 | 什么时候用 |
+| --- | --- | --- |
+| 线性 | $\int_a^b(\alpha f+\beta g)=\alpha\int_a^b f+\beta\int_a^b g$ | 拆项、提常数、分段 |
+| 区间可加 | $\int_a^b f=\int_a^c f+\int_c^b f$ | 已知两段求第三段；分段函数 |
+| 保号与比较 | $f\ge g\Rightarrow\int_a^b f\ge\int_a^b g$ | 比较大小、证明不等式 |
+| 估值定理 | $m(b-a)\le\int_a^b f\le M(b-a)$ | 只要范围、不要精确值 |
+| 绝对值不等式 | $\lvert\int_a^b f\rvert\le\int_a^b\lvert f\rvert$ | 放缩、证有界 |
+
+### 三个必记的几何面积
+
+| 被积函数 | 区间 | 积分值 | 图形 |
+| --- | --- | --- | --- |
+| $\sqrt{r^{2}-x^{2}}$ | $[-r,r]$ | $\dfrac{\pi r^{2}}{2}$ | 上半圆 |
+| $kx$ | $[0,h]$ | $\dfrac{kh^{2}}{2}$ | 三角形 |
+| $c$ | $[a,b]$ | $c(b-a)$ | 矩形 |
+
+### 变上限积分函数
+
+| 已知 | 能得到 |
+| --- | --- |
+| $f$ 在 $[a,b]$ 连续 | $\Phi(x)=\int_a^x f$ 在 $[a,b]$ 上连续 |
+| $\lvert f\rvert\le M$ | $\lvert\Phi(x+\Delta x)-\Phi(x)\rvert\le M\lvert\Delta x\rvert$ |
+| 要"可导且 $\Phi'=f$" | 5.2 节的微积分基本定理 |
+
+## 作业对应
+
+检测题 **5-1 全做**。做完自查三条：① 看到根号能想到半圆；② 区间不是 $[0,1]$ 时记得乘 $b-a$；③ 比较积分大小先确认区间相同。
+
+上一节：[期末总览](/s/roadmap)。下一节：[5.2 微积分基本定理与变限积分](/s/5-2-ftc)。

@@ -1,0 +1,275 @@
+[
+  {
+    "id": "5.1-01",
+    "page": "5-1-concept",
+    "level": "易",
+    "answer": "3",
+    "expect": 3,
+    "verify": "integ(lambda x: x + 1.5, 1, 2)",
+    "verifyKind": "numeric",
+    "note": "区间可加：∫0^2 = ∫0^1 + ∫1^2，所以答案是 5−2=3。用满足两条已知条件的线性函数 f(x)=x+1.5 复算：∫0^1=2，∫0^2=5，∫1^2=3"
+  },
+  {
+    "id": "5.1-02",
+    "page": "5-1-concept",
+    "level": "易",
+    "answer": "左边大（∫0^1 x dx = 1/2 > 1/3 = ∫0^1 x² dx）",
+    "expect": 1,
+    "verify": "float(integ(lambda x: x, 0, 1) > integ(lambda x: x**2, 0, 1))",
+    "verifyKind": "proxy",
+    "note": "保号性：在 (0,1) 上 x > x²，同一区间同向比较，积分也大。数值验证两个积分差为正"
+  },
+  {
+    "id": "5.1-03",
+    "page": "5-1-concept",
+    "level": "中",
+    "answer": "2π",
+    "expect": 6.283185307179586,
+    "verify": "integ(lambda x: sqrt(4-x*x), -2, 2)",
+    "verifyKind": "numeric",
+    "note": "几何意义：y=√(4−x²) 是半径 2 的上半圆，面积 = (1/2)π·2² = 2π。数值积分复算 ≈ 6.2831844"
+  },
+  {
+    "id": "5.1-04",
+    "page": "5-1-concept",
+    "level": "中",
+    "answer": "2",
+    "expect": 2,
+    "verify": "lim(lambda h: integ(lambda t: t**2+1, 1, 1+h)/h, 0)",
+    "verifyKind": "numeric",
+    "note": "(1/h)∫a^(a+h) f = f 在 [a,a+h] 上的平均值 → f(a) = 1²+1 = 2。数值：平均值 = 2+h+h²/3，令 h→0"
+  },
+  {
+    "id": "5.1-05",
+    "page": "5-1-concept",
+    "level": "中",
+    "answer": "1/2 ≤ I ≤ 1",
+    "expect": 1,
+    "verify": "float(0.5 <= integ(lambda x: 1/(1+x*x), 0, 1) <= 1)",
+    "verifyKind": "proxy",
+    "note": "估值定理：在 [0,1] 上 f 从 1 降到 1/2，区间长度 1，所以 1/2·1 ≤ I ≤ 1·1。真值 π/4≈0.7854 落在区间内"
+  },
+  {
+    "id": "5.2-01",
+    "page": "5-2-ftc",
+    "level": "易",
+    "answer": "3/2 + ln2",
+    "expect": 2.1931471805599454,
+    "verify": "integ(lambda x: x + 1/x, 1, 2)",
+    "verifyKind": "numeric",
+    "note": "牛顿-莱布尼茨：原函数 x²/2 + ln x，代入 2 与 1 得 (2−1/2) + (ln2−0) = 3/2 + ln2 ≈ 2.1931"
+  },
+  {
+    "id": "5.2-02",
+    "page": "5-2-ftc",
+    "level": "中",
+    "answer": "1",
+    "expect": 1,
+    "verify": "integ(lambda x: abs(x-1), 0, 2)",
+    "verifyKind": "numeric",
+    "note": "被积函数含绝对值，必须按 x=1 分区间：∫0^1(1−x)dx + ∫1^2(x−1)dx = 1/2 + 1/2 = 1"
+  },
+  {
+    "id": "5.2-03",
+    "page": "5-2-ftc",
+    "level": "易",
+    "answer": "√2",
+    "expect": 1.4142135623730951,
+    "verify": "d1(lambda x: integ(lambda t: sqrt(1+t**3), 1, x), 1)",
+    "verifyKind": "numeric",
+    "tol": 0.0001,
+    "note": "变上限求导：Φ′(x)=√(1+x³)，Φ′(1)=√2。用数值导数复算"
+  },
+  {
+    "id": "5.2-04",
+    "page": "5-2-ftc",
+    "level": "中",
+    "answer": "-1",
+    "expect": -1,
+    "verify": "d1(lambda x: integ(exp, sin(x), cos(x)), 0)",
+    "verifyKind": "numeric",
+    "tol": 0.0001,
+    "note": "上下限都是函数：F′(x)=e^(cos x)·(−sin x) − e^(sin x)·(cos x)，代入 x=0 得 0 − 1 = −1"
+  },
+  {
+    "id": "5.2-05",
+    "page": "5-2-ftc",
+    "level": "中",
+    "answer": "1/2",
+    "expect": 0.5,
+    "verify": "lim(lambda x: integ(sin, 0, x)/x**2, 0)",
+    "verifyKind": "numeric",
+    "note": "0/0 型，洛必达一次得 sin x/(2x) → 1/2。也可用 1−cos x ~ x²/2 直接看出"
+  },
+  {
+    "id": "5.2-06",
+    "page": "5-2-ftc",
+    "level": "难",
+    "answer": "1",
+    "expect": 1,
+    "verify": "d1(lambda x: integ(lambda t: 1/(1+t*t), 0, x*x), 1)",
+    "verifyKind": "numeric",
+    "tol": 0.0001,
+    "note": "上限是 x²：Φ′(x)=f(x²)·2x = 2x/(1+x⁴)，在 x=1 处为 1"
+  },
+  {
+    "id": "5.3-01",
+    "page": "5-3-substitution",
+    "level": "中",
+    "answer": "2(2√2−1)/9",
+    "expect": 0.4063171388324867,
+    "verify": "integ(lambda x: x**2*sqrt(1+x**3), 0, 1)",
+    "verifyKind": "numeric",
+    "note": "令 u=1+x³，du=3x²dx，上下限 1→2：(1/3)∫1^2 √u du = (2/9)(2√2−1) ≈ 0.406317"
+  },
+  {
+    "id": "5.3-02",
+    "page": "5-3-substitution",
+    "level": "易",
+    "answer": "16",
+    "expect": 16,
+    "verify": "integ(lambda x: x**3*cos(x)+3*x*x, -2, 2)",
+    "verifyKind": "numeric",
+    "note": "对称区间：x³cos x 是奇函数，积分为 0；3x² 是偶函数，(∫−2^2)3x²dx = 2·8 = 16"
+  },
+  {
+    "id": "5.3-03",
+    "page": "5-3-substitution",
+    "level": "中",
+    "answer": "2/3",
+    "expect": 0.6666666666666666,
+    "verify": "integ(lambda x: sin(x)**3, 0, pi/2)",
+    "verifyKind": "numeric",
+    "note": "sin³x = sin x(1−cos²x)，令 u=cos x，上下限由 0→1 变成 1→0：∫0^1(1−u²)du = 2/3"
+  },
+  {
+    "id": "5.3-04",
+    "page": "5-3-substitution",
+    "level": "中",
+    "answer": "1",
+    "expect": 1,
+    "verify": "integ(lambda x: x*exp(x), 0, 1)",
+    "verifyKind": "numeric",
+    "note": "分部：∫x e^x dx = x e^x − e^x，代入 1 与 0 得 (e−e) − (0−1) = 1"
+  },
+  {
+    "id": "5.3-05",
+    "page": "5-3-substitution",
+    "level": "难",
+    "answer": "(e^(π/2)−1)/2",
+    "expect": 1.9052386904826757,
+    "verify": "integ(lambda x: exp(x)*cos(x), 0, pi/2)",
+    "verifyKind": "numeric",
+    "note": "两次分部回到自身：∫e^x cos x dx = e^x(sin x+cos x)/2，代入 π/2 与 0 得 (e^(π/2)−1)/2 ≈ 1.90524"
+  },
+  {
+    "id": "5.4-01",
+    "page": "5-4-applications",
+    "level": "易",
+    "answer": "1/6",
+    "expect": 0.16666666666666666,
+    "verify": "integ(lambda x: x - x**2, 0, 1)",
+    "verifyKind": "numeric",
+    "note": "两曲线 y=x 与 y=x² 在 [0,1] 上交于 0 与 1，区间内 x 在上：∫0^1(x−x²)dx = 1/2−1/3 = 1/6"
+  },
+  {
+    "id": "5.4-02",
+    "page": "5-4-applications",
+    "level": "中",
+    "answer": "4/3",
+    "expect": 1.3333333333333333,
+    "verify": "integ(lambda x: 2*x - x**2, 0, 2)",
+    "verifyKind": "numeric",
+    "note": "先求交点 2x=x² ⇒ x=0,2；[0,2] 内直线在上：∫0^2(2x−x²)dx = 4−8/3 = 4/3"
+  },
+  {
+    "id": "5.4-03",
+    "page": "5-4-applications",
+    "level": "中",
+    "answer": "32/3",
+    "expect": 10.666666666666666,
+    "verify": "integ(lambda x: 4 - x**2, -2, 2)",
+    "verifyKind": "numeric",
+    "note": "交点 x²=4 ⇒ x=±2；抛物线在 [−2,2] 内位于 y=4 下方：∫−2^2(4−x²)dx = 16−16/3 = 32/3"
+  },
+  {
+    "id": "5.4-04",
+    "page": "5-4-applications",
+    "level": "易",
+    "answer": "π/2",
+    "expect": 1.5707963267948966,
+    "verify": "pi*integ(lambda x: x, 0, 1)",
+    "verifyKind": "numeric",
+    "note": "绕 x 轴：V=π∫0^1(√x)²dx = π∫0^1 x dx = π/2"
+  },
+  {
+    "id": "5.4-05",
+    "page": "5-4-applications",
+    "level": "难",
+    "answer": "2π/15",
+    "expect": 0.4188790204786391,
+    "verify": "pi*integ(lambda x: x**2 - x**4, 0, 1)",
+    "verifyKind": "numeric",
+    "note": "两条曲线 y=x 与 y=x² 围成的区域绕 x 轴：外半径 x、内半径 x²，V=π∫0^1(x²−x⁴)dx = π(1/3−1/5) = 2π/15"
+  },
+  {
+    "id": "5.5-01",
+    "page": "5-5-improper",
+    "level": "易",
+    "answer": "1/2",
+    "expect": 0.5,
+    "verify": "integ(lambda x: exp(-2*x), 0, 40)",
+    "verifyKind": "numeric",
+    "note": "原函数 −e^(−2x)/2，上限趋于无穷时该式趋于 0，下限为 −1/2，故积分 = 1/2。截到 40 复算，尾项 e^(−80) 可忽略"
+  },
+  {
+    "id": "5.5-02",
+    "page": "5-5-improper",
+    "level": "易",
+    "answer": "1",
+    "expect": 1,
+    "verify": "integ(lambda x: 1/x**2, 1, 100) + 1/100",
+    "verifyKind": "numeric",
+    "note": "p=2>1 收敛，值为 1/(p−1)=1。复算：[1,100] 上的定积分 0.99 加上尾部 ∫100^∞ x^(−2)dx = 1/100"
+  },
+  {
+    "id": "5.5-03",
+    "page": "5-5-improper",
+    "level": "中",
+    "answer": "-1",
+    "expect": -1,
+    "verify": "-integ(lambda u: u*exp(-u), 0, 60)",
+    "verifyKind": "numeric",
+    "note": "x=0 是瑕点，∫0^1 ln x dx = lim(t→0+)[x ln x − x]_t^1 = −1。换元 x=e^(−u) 后化为 −∫0^∞ u e^(−u)du = −1，用右侧式子复算"
+  },
+  {
+    "id": "5.5-04",
+    "page": "5-5-improper",
+    "level": "中",
+    "answer": "发散",
+    "expect": 1,
+    "verify": "float(integ(lambda x: 1/(x*log(x)), 2, 1000) > integ(lambda x: 1/(x*log(x)), 2, 100) + 0.3)",
+    "verifyKind": "proxy",
+    "note": "原函数 ln ln x，∫2^R = ln ln R − ln ln 2 → +∞（增长极慢）。数值：上界 100 时为 1.894，1000 时为 2.299，仍在增大"
+  },
+  {
+    "id": "5.5-05",
+    "page": "5-5-improper",
+    "level": "中",
+    "answer": "1",
+    "expect": 1,
+    "verify": "integ(lambda x: x*exp(-x), 0, 60)",
+    "verifyKind": "numeric",
+    "note": "分部：∫ x e^(−x)dx = −(x+1)e^(−x)，∞ 处为 0，0 处为 −1，故积分 = 1。截到 60 复算"
+  },
+  {
+    "id": "5.5-06",
+    "page": "5-5-improper",
+    "level": "难",
+    "answer": "1/2",
+    "expect": 0.5,
+    "verify": "integ(lambda x: x**-3, 1, 20) + 1/(2*20**2)",
+    "verifyKind": "numeric",
+    "note": "p=3>1，直接用结论 ∫1^∞ x^(−p)dx = 1/(p−1) = 1/2。复算：[1,20] 上的定积分加上尾部 1/(2·20²)"
+  }
+]
