@@ -281,5 +281,15 @@
     "verify": "integ(lambda x: x**-3, 1, 20) + 1/(2*20**2)",
     "verifyKind": "numeric",
     "note": "p=3>1，直接用结论 ∫1^∞ x^(−p)dx = 1/(p−1) = 1/2。复算：[1,20] 上的定积分加上尾部 1/(2·20²)"
+  },
+  {
+    "id": "5.4-07",
+    "page": "5-4-applications",
+    "level": "难",
+    "answer": "4√3R³/3",
+    "expect": 2.309401076758503,
+    "verify": "integ(lambda x: sqrt(3)*(1 - x*x), -1, 1)",
+    "verifyKind": "numeric",
+    "note": "底面半径 R 的圆、垂直直径的截面为正三角形：A(x)=√3(R²−x²)，V=∫A dx=4√3R³/3。取 R=1 数值复算得 2.3094"
   }
 ]
