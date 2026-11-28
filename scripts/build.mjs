@@ -474,6 +474,34 @@ const kbProblems = (() => {
   }
   return out;
 })();
+// 从正文里抽出每道题的题干（不含答案），供"导出本章题单"使用
+function extractProblems(body) {
+  const out = [];
+  const chunks = body.split(/^:::problem\b/m).slice(1);
+  const idx = body.split(/^:::problem\b/m);
+  for (let i = 1; i < idx.length; i++) {
+    const chunk = idx[i];
+    const nl = chunk.indexOf('\n');
+    if (nl < 0) continue;
+    const header = chunk.slice(0, nl);
+    const idm = /id=([\w.\-]+)/.exec(header);
+    const lvm = /level=("[^"]*"|\S+)/.exec(header);
+    const srcm = /source=("[^"]*"|\S+)/.exec(header);
+    const strip = (s) => (s || '').replace(/^"|"$/g, '');
+    let rest = chunk.slice(nl + 1);
+    const ansAt = rest.search(/^:::ans\b/m);
+    if (ansAt >= 0) rest = rest.slice(0, ansAt);
+    const text = rest
+      .replace(/<!--[\s\S]*?-->/g, '')
+      .split('\n')
+      .filter((line) => !/^:::\s*$/.test(line))
+      .join('\n')
+      .trim();
+    if (idm && text) out.push({ id: idm[1], level: strip(lvm && lvm[1]), source: strip(srcm && srcm[1]), text });
+  }
+  return out;
+}
+
 const problemById = new Map(kbProblems.filter((p) => p && p.id).map((p) => [p.id, p]));
 const pageTitleBySlug = new Map(pages.map((p) => [p.slug, p.title]));
 const bySlugTitle = (slug) => pageTitleBySlug.get(slug) || slug;
@@ -515,10 +543,42 @@ for (const part of nav) {
       ? `<section class="ch-block"><h2>动手</h2><p>${escapeHtml(ch.handsOn)}</p></section>`
       : '';
 
+    // —— 导出题单：只含题干，不含答案 ——
+    const mdLines = [];
+    let nProblems = 0;
+    for (const it of ch.items) {
+      const probs = extractProblems(it.body || '');
+      if (!probs.length) continue;
+      mdLines.push(`## ${it.title}`, '');
+      for (const p of probs) {
+        nProblems += 1;
+        const meta = [p.level, p.source].filter(Boolean).join(' · ');
+        mdLines.push(`### ${p.id}${meta ? `（${meta}）` : ''}`, '');
+        mdLines.push(p.text, '');
+        mdLines.push('我的作答：', '', '---', '');
+      }
+    }
+    if (nProblems) {
+      const head = [
+        `# ${ch.title} · 题单`,
+        '',
+        `> 共 ${nProblems} 题。只含题干，不含答案——答案回到站点对应小节看。`,
+        '> 拿去和 AI 讨论时，建议先说清"这是我的作业，请指出我思路里的错误，不要直接给答案"。',
+        '',
+      ];
+      write(path.join('c', ch.id, 'problems.md'), head.concat(mdLines).join('\n'));
+    }
+    const exportBar = nProblems
+      ? `<section class="ch-block export-bar"><h2>导出题单</h2>
+        <p>把本章 <strong>${nProblems}</strong> 道题导出成 Markdown（只含题干、不含答案），方便你和 AI 逐个讨论。</p>
+        <p><a class="btn" href="${url('c/' + ch.id)}/problems.md" download>下载本章题单（.md）</a></p>
+        <p class="muted">用法：把文件内容粘给 AI，附一句"这是我的作业，我卡在第几题，别直接给答案，先问我卡在哪"。</p></section>`
+      : '';
+
     write(path.join('c', ch.id, 'index.html'), shell({
       title: ch.title,
       activeSlug: '',
-      body: `<header class="page-head"><div class="crumbs"><a href="${BASE}/">主页</a><span>/</span><a href="${url('p/' + part.id)}">${escapeHtml(part.title)}</a></div><h1>${escapeHtml(ch.title)}</h1><p class="lede">${escapeHtml(ch.desc || '')}</p></header>${goals}<section class="ch-block"><h2>${ch.items.length} 节</h2><ol class="sec-list">${list}</ol></section>${glossary}${selfCheck}${handsOn}`,
+      body: `<header class="page-head"><div class="crumbs"><a href="${BASE}/">主页</a><span>/</span><a href="${url('p/' + part.id)}">${escapeHtml(part.title)}</a></div><h1>${escapeHtml(ch.title)}</h1><p class="lede">${escapeHtml(ch.desc || '')}</p></header>${goals}<section class="ch-block"><h2>${ch.items.length} 节</h2><ol class="sec-list">${list}</ol></section>${glossary}${selfCheck}${handsOn}${exportBar}`,
     }));
   }
 }

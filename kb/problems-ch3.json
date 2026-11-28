@@ -118,5 +118,125 @@
     "verify": "lim(lambda x: (x + sin(x)) / x, \"inf\")",
     "verifyKind": "numeric",
     "note": "拆成 1 + sin x/x；洛必达的比值 1+cos x 振荡，条件 3 不满足"
+  },
+  {
+    "id": "3.4-01",
+    "page": "3-4-extrema",
+    "level": "易",
+    "answer": "极大 2（x=−1）、极小 −2（x=1）",
+    "expect": 2,
+    "verify": "d1(lambda x: x**3 - 3*x, -1) + (lambda x: x**3 - 3*x)(-1)",
+    "verifyKind": "numeric",
+    "note": "f′=3x²−3=0 ⇒ x=±1；f(−1)=2 为极大、f(1)=−2 为极小。此处验证 f′(−1)=0 后取 f(−1)=2"
+  },
+  {
+    "id": "3.4-02",
+    "page": "3-4-extrema",
+    "level": "中",
+    "answer": "D",
+    "expect": 1,
+    "verify": "float(((lambda x: x**3)(1) > (lambda x: x**3)(-1)) and abs(d1(lambda x: x**3, 0)) < 1e-6)",
+    "verifyKind": "proxy",
+    "note": "x³ 严格增但 f′(0)=0，说明\"严格增 ⇒ f′>0\"是错的；D 是教材判据（f′≥0 且不恒为 0 ⇒ 严格增）"
+  },
+  {
+    "id": "3.4-03",
+    "page": "3-4-extrema",
+    "level": "中",
+    "answer": "极大 2（x=0）、极小 −2（x=2）",
+    "expect": 2,
+    "verify": "(lambda x: x**3 - 3*x*x + 2)(0)",
+    "verifyKind": "numeric",
+    "note": "f′=3x(x−2)；f″(0)=−6<0 极大、f″(2)=6>0 极小；极大值 f(0)=2"
+  },
+  {
+    "id": "3.4-04",
+    "page": "3-4-extrema",
+    "level": "易",
+    "answer": "最大 2（x=2）、最小 −2（x=1）",
+    "expect": 2,
+    "verify": "max((lambda x: x**3 - 3*x)(t) for t in [0, 1, 2])",
+    "verifyKind": "numeric",
+    "note": "候选取端点 0、2 与区间内驻点 1；函数值 0、−2、2，最大 2 最小 −2"
+  },
+  {
+    "id": "3.4-05",
+    "page": "3-4-extrema",
+    "level": "难",
+    "answer": "垂直墙两边各 5m、平行墙一边 10m",
+    "expect": 0,
+    "verify": "d1(lambda x: 2*x + 50/x, 5)",
+    "verifyKind": "numeric",
+    "note": "L(x)=2x+50/x，L′(5)=2−50/25=0；L″>0 故 x=5 为最小点，此时 y=10、L=20"
+  },
+  {
+    "id": "3.4-06",
+    "page": "3-4-extrema",
+    "level": "难",
+    "answer": "底宽 = 2√(2A/(4+π))",
+    "expect": 0,
+    "verify": "(lambda A: d1(lambda r: A/r + 2*r + 3.141592653589793*r/2, (2*A/(4+3.141592653589793))**0.5))(10.0)",
+    "verifyKind": "numeric",
+    "note": "L(r)=A/r+2r+πr/2，L′=0 ⇒ r²=2A/(4+π)；取 A=10 验证在该 r 处 L′=0"
+  },
+  {
+    "id": "3.4-07",
+    "page": "3-4-extrema",
+    "level": "中",
+    "answer": "ln(1+x) > x − x²/2",
+    "expect": 1,
+    "verify": "float(min(log(1 + x) - (x - x*x/2) for x in [0.1, 0.5, 1, 2, 5]) > 0)",
+    "verifyKind": "proxy",
+    "note": "F(x)=ln(1+x)−x+x²/2，F(0)=0，F′(x)=x²/(1+x)>0 ⇒ F 严格增 ⇒ F(x)>0"
+  },
+  {
+    "id": "3.5-01",
+    "page": "3-5-concavity",
+    "level": "易",
+    "answer": "凸 (−∞,1)、凹 (1,+∞)、拐点 (1,0)",
+    "expect": 0,
+    "verify": "(lambda x: x**3 - 3*x*x + 2)(1)",
+    "verifyKind": "proxy",
+    "note": "y″=6(x−1)：x<1 时 y″<0（凸），x>1 时 y″>0（凹），x=1 变号；拐点纵坐标要代原函数 y(1)=0"
+  },
+  {
+    "id": "3.5-02",
+    "page": "3-5-concavity",
+    "level": "中",
+    "answer": "D（既非充分也非必要）",
+    "expect": 1,
+    "verify": "float(d2(lambda x: x**4, 0.1) > 0 and d2(lambda x: x**4, -0.1) > 0)",
+    "verifyKind": "proxy",
+    "note": "x⁴ 在 0 处 f″=0 但两侧 f″>0 不变号，不是拐点 ⇒ 不充分；x^{1/3} 在 0 处 f″ 不存在却是拐点 ⇒ 不必要"
+  },
+  {
+    "id": "3.5-03",
+    "page": "3-5-concavity",
+    "level": "中",
+    "answer": "x=1 与 y=1",
+    "expect": 1,
+    "verify": "lim(lambda x: x/(x-1), \"inf\")",
+    "verifyKind": "numeric",
+    "note": "水平渐近线 y=1（分子分母同除 x）；铅直渐近线 x=1（分母零点）。有水平渐近线则同方向无斜渐近线"
+  },
+  {
+    "id": "3.5-04",
+    "page": "3-5-concavity",
+    "level": "易",
+    "answer": "A（单调减少，凹）",
+    "expect": 1,
+    "verify": "float(d1(lambda x: x*x - x, 0.25) < 0 and d2(lambda x: x*x - x, 0.25) > 0)",
+    "verifyKind": "proxy",
+    "note": "取 f=x²−x 在 x=0.25：f′=2x−1<0（减）、f″=2>0（凹），对应\"减 + 凹\""
+  },
+  {
+    "id": "3.5-05",
+    "page": "3-5-concavity",
+    "level": "难",
+    "answer": "(e^x+e^y)/2 ≥ e^((x+y)/2)",
+    "expect": 1,
+    "verify": "float(min((exp(x)+exp(y))/2 - exp((x+y)/2) for x in [-1,0,1,2] for y in [-1,0,1,2]) >= -1e-12)",
+    "verifyKind": "proxy",
+    "note": "e^t 的二阶导 e^t>0 ⇒ 凹 ⇒ 弦在曲线上方，取中点即得不等式；网格验证差值非负"
   }
 ]

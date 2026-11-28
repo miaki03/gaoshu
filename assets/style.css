@@ -533,3 +533,7 @@ details.g-block.ans { padding-bottom: 0; }
   background: var(--warm-soft);
   padding: .7rem .9rem; border-radius: 0 8px 8px 0; font-size: .85rem;
 }
+
+/* 章节页的"导出题单"块 */
+.export-bar .btn { display: inline-block; }
+.export-bar p { margin: .4rem 0; }
