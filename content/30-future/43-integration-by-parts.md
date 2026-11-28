@@ -85,7 +85,7 @@ $$\textbf{反}\ \textbf{对}\ \textbf{幂}\ \textbf{指}\ \textbf{三}$$
 | $x\sin x$ | $x$（幂） | $\sin x\,dx$（三） | 幂在三前 |
 | $x\ln x$ | $\ln x$（对） | $x\,dx$（幂） | 对在幂前 |
 | $x\arctan x$ | $\arctan x$（反） | $x\,dx$（幂） | 反在幂前 |
-| $e^{x}\sin x$ | $\sin x$（或 $e^{x}$） | 剩下那个 | 幂指三只隔一位，两次同向取就回到原式 |
+| $e^{x}\sin x$ | $\sin x$（或 $e^{x}$） | 剩下那个 | 循环型：口诀在这一对上给不出结论，两个都行，但**两次必须取同一侧** |
 
 :::problem id=4.3-02 level=易 source="本校检测题 4-3 一、2 同类"
 计算 $\displaystyle\int x\sin x\,dx$。

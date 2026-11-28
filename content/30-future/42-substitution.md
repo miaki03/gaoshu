@@ -31,7 +31,7 @@ concepts: [c-substitution]
 $$\frac{d}{dx}f(\varphi(x))=f'(\varphi(x))\,\varphi'(x).$$
 两边同时乘 $dx$，就得到微分形式
 $$d\,f(\varphi(x))=f'(\varphi(x))\,\varphi'(x)\,dx .$$
-反过来用：**看到 $f'(\varphi(x))\varphi'(x)dx$，就等于看到 $f'$ 在 $\varphi(x)$ 处的微分。** 于是
+反过来用：**看到 $f'(\varphi(x))\varphi'(x)dx$，就等于看到复合函数 $f(\varphi(x))$ 的微分 $d\,f(\varphi(x))$。** 于是
 
 $$\int f(\varphi(x))\,\varphi'(x)\,dx=\int f(u)\,du,\qquad u=\varphi(x).$$
 
@@ -119,9 +119,11 @@ $$1-\sin^{2}t=\cos^{2}t,\qquad 1+\tan^{2}t=\sec^{2}t,\qquad \sec^{2}t-1=\tan^{2}
 | --- | --- | --- | --- |
 | $\sqrt{a^{2}-x^{2}}$ | $x=a\sin t$ | $\sqrt{a^{2}\cos^{2}t}=a\cos t$ | $t\in\left[-\frac\pi2,\frac\pi2\right]$ |
 | $\sqrt{a^{2}+x^{2}}$ | $x=a\tan t$ | $\sqrt{a^{2}\sec^{2}t}=a\sec t$ | $t\in\left(-\frac\pi2,\frac\pi2\right)$ |
-| $\sqrt{x^{2}-a^{2}}$ | $x=a\sec t$ | $\sqrt{a^{2}\tan^{2}t}=a\tan t$ | $t\in\left[0,\frac\pi2\right)$ |
+| $\sqrt{x^{2}-a^{2}}$ | $x=a\sec t$（只处理 $x>a$） | $\sqrt{a^{2}\tan^{2}t}=a\tan t$ | $t\in\left(0,\frac\pi2\right)$，此处 $\tan t>0$ |
 
-三件事必须做全：**换 $x$、换 $dx$、最后换回 $x$**。范围规定是为了保证反函数存在，答题时写一句"设 $x=a\sin t$"就够，不用展开讨论。
+三件事必须做全：**换 $x$、换 $dx$、最后换回 $x$**。
+
+答题时那句"设 $x=a\sin t$"要**把范围一起写出来**：设 $x=a\sin t$，$t\in\left[-\frac\pi2,\frac\pi2\right]$。范围不只是为了让代换可逆，更关键的是它保证 $\cos t\ge0$，开根号时才能直接写 $\sqrt{a^{2}-x^{2}}=a\cos t$ 而不带绝对值。只写"设 $x=a\sin t$"、不写范围，这一步就没有依据。
 
 :::trap
 三个最常见的错：① 换了 $x$ 忘了换 $dx$（$dx=a\cos t\,dt$ 不能丢）；② 结果停在 $t$ 上，没换回 $x$；③ 回代时把 $\sin t=x$ 直接写成 $t=x$。回代的正确做法是用恒等式反解：$\sin t=\dfrac xa$ 得 $t=\arcsin\dfrac xa$，$\cos t=\dfrac{\sqrt{a^{2}-x^{2}}}{a}$。
@@ -194,7 +196,7 @@ $$\int\frac{\sqrt{x^{2}-4}}{x}dx=\sqrt{x^{2}-4}-2\arccos\frac2x+C .$$
 **验算**：在 $x=3$ 处，结果求导为 $\dfrac{3}{\sqrt5}-\dfrac{4}{3\sqrt5}=\dfrac{5}{3\sqrt5}=\dfrac{\sqrt5}{3}$，而被积函数 $\dfrac{\sqrt{9-4}}{3}=\dfrac{\sqrt5}{3}$，对上了。
 
 :::trap
-$t=\operatorname{arcsec}\dfrac x2$ 和 $t=\arccos\dfrac2x$ 是同一个角，写哪个都对，但**要保证定义域写得出来**：$\arccos\dfrac2x$ 只要求 $\left\lvert\dfrac2x\right\rvert\le1$，比 $\operatorname{arcsec}$ 好讨论。
+在 $x>2$ 的范围内，$t=\operatorname{arcsec}\dfrac x2$ 和 $t=\arccos\dfrac2x$ 是同一个角，写哪个都对；若题目允许 $x<-2$，答案要分两支（这是 sec 代换最容易漏的地方），但**要保证定义域写得出来**：$\arccos\dfrac2x$ 只要求 $\left\lvert\dfrac2x\right\rvert\le1$，比 $\operatorname{arcsec}$ 好讨论。
 
 回代的顺序固定：先由 $\tan t=\dfrac{\sqrt{x^{2}-4}}{2}$ 把 $2\tan t$ 换回 $\sqrt{x^{2}-4}$，再由 $\sec t=\dfrac x2$ 把 $t$ 换回 $\arccos\dfrac2x$。**先换函数值，再换角**，顺序反了容易把两个混在一起。
 :::
@@ -226,7 +228,7 @@ $t=\operatorname{arcsec}\dfrac x2$ 和 $t=\arccos\dfrac2x$ 是同一个角，写
 | --- | --- | --- | --- | --- |
 | $\sqrt{a^{2}-x^{2}}$ | $x=a\sin t$ | $a\cos t\,dt$ | $a\cos t$ | $\sin t=\dfrac xa$，$\cos t=\dfrac{\sqrt{a^{2}-x^{2}}}{a}$，$t=\arcsin\dfrac xa$ |
 | $\sqrt{a^{2}+x^{2}}$ | $x=a\tan t$ | $a\sec^{2}t\,dt$ | $a\sec t$ | $\tan t=\dfrac xa$，$\sec t=\dfrac{\sqrt{a^{2}+x^{2}}}{a}$，$t=\arctan\dfrac xa$ |
-| $\sqrt{x^{2}-a^{2}}$ | $x=a\sec t$ | $a\sec t\tan t\,dt$ | $a\tan t$ | $\sec t=\dfrac xa$，$\tan t=\dfrac{\sqrt{x^{2}-a^{2}}}{a}$，$t=\arccos\dfrac ax$ |
+| $\sqrt{x^{2}-a^{2}}$ | $x=a\sec t$（只处理 $x>a$） | $a\sec t\tan t\,dt$ | $a\tan t$ | $\sec t=\dfrac xa$，$\tan t=\dfrac{\sqrt{x^{2}-a^{2}}}{a}$，$t=\arccos\dfrac ax$（$x>a$ 时成立） |
 
 ### 两种换元法怎么选
 

@@ -118,5 +118,15 @@
     "verify": "lim(lambda x: (x*x + 1*x - 2) / (x - 1), 1)",
     "verifyKind": "numeric",
     "note": "分子必含因式 (x−1)，设另一根 r，则 r=b，故 x²+ax+b=(x−1)(x−b)；回代极限 1−b=3 ⇒ b=−2、a=1。错解 (x−1)(x+b) 会给出 a=−3,b=2，回代极限 −1"
+  },
+  {
+    "id": "5.4-e1",
+    "page": "5-4-applications",
+    "claim": "y=√x 在 [0,1] 与 x 轴围成的区域绕 y 轴：垫圈法得 4π/5，柱壳法复算一致；误用圆盘法只得 π/5",
+    "answer": "4π/5",
+    "expect": 2.5132741228718345,
+    "verify": "pi * integ(lambda y: 1 - y**4, 0, 1)",
+    "verifyKind": "numeric",
+    "note": "外半径 1、内半径 x=y²（截面是垫圈）；柱壳法 2π∫₀¹x√x dx 与此相等，可交叉验算"
   }
 ]

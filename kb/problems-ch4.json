@@ -7,7 +7,7 @@
     "expect": 0,
     "verify": "max(abs(d1(sin, 0.9) - cos(0.9)), abs(d1(cos, 1.4) + sin(1.4)))",
     "verifyKind": "numeric",
-    "note": "原函数是 sin x ⇒ f=(sin x)'=cos x；两项都验：(sin)'=cos、(cos)'=-sin，相减应为 0"
+    "note": "原函数是 sin x ⇒ f=(sin x)'=cos x；两项都验：(sin)'=cos、(cos)'=-sin，相减应为 0（注意：本 verify 只覆盖\"f=cos x、f′=−sin x\"两个子问；第三问 ∫f′=cos x+C 靠人工核对）"
   },
   {
     "id": "4.1-02",
@@ -27,7 +27,7 @@
     "expect": 0,
     "verify": "d1(log, 1.7) - 1/1.7",
     "verifyKind": "numeric",
-    "note": "原函数 ln x 求导得 f=1/x；∫f 直接由定义写成 ln x+C"
+    "note": "原函数 ln x 求导得 f=1/x；∫f 直接由定义写成 ln x+C（注意：本 verify 只覆盖\"f=1/x\"；第二问 ∫f=ln x+C 靠人工核对）"
   },
   {
     "id": "4.1-04",
@@ -96,7 +96,7 @@
     "answer": "(1/2)arcsin x - (1/2)x sqrt(1-x^2) + C",
     "expect": 0,
     "verify": "d1(lambda x: asin(x)/2 - x*sqrt(1 - x*x)/2, 0.5) - 0.25/sqrt(0.75)",
-    "tol": 1e-4,
+    "tol": 0.0001,
     "verifyKind": "numeric",
     "note": "x=sin t，∫sin^2 t dt 降次后回代；x=0.5 处被积函数为 0.25/sqrt(0.75)"
   },
@@ -117,7 +117,7 @@
     "answer": "sqrt(x^2-4) - 2 arccos(2/x) + C",
     "expect": 0,
     "verify": "d1(lambda x: sqrt(x*x - 4) - 2*acos(2/x), 3.0) - sqrt(5)/3",
-    "tol": 1e-4,
+    "tol": 0.0001,
     "verifyKind": "numeric",
     "note": "x=2sec t，2∫tan^2 t dt=2(tan t - t)；x=3 处被积函数 sqrt(5)/3"
   },

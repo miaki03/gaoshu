@@ -35,7 +35,11 @@ $$\int_a^b f(x)\,dx=F(b)-F(a),\qquad F'=f .$$
 
 $$\frac{\Phi(x+\Delta x)-\Phi(x)}{\Delta x}=\frac{1}{\Delta x}\int_x^{x+\Delta x}f(t)\,dt .$$
 
-右边是 $f$ 在 $[x,x+\Delta x]$ 上的平均值。$f$ 连续，$5.1$ 已证过这个平均值随区间收缩趋于 $f(x)$。所以
+右边是 $f$ 在 $[x,x+\Delta x]$ 上的平均值。要证明它趋于 $f(x)$，用**积分中值定理**：存在 $\xi$ 介于 $x$ 与 $x+\Delta x$ 之间，使
+
+$\frac{1}{\Delta x}\int_x^{x+\Delta x}f(t)\,dt=f(\xi).$
+
+$f$ 连续，当 $\Delta x\to0$ 时 $\xi\to x$，故 $f(\xi)\to f(x)$。所以
 
 $$\Phi'(x)=\lim_{\Delta x\to0}\frac{1}{\Delta x}\int_x^{x+\Delta x}f(t)\,dt=f(x).$$
 
